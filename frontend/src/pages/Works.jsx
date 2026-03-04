@@ -4,6 +4,8 @@ import { Link } from "react-router-dom"
 import Nav from "../components/Nav.jsx"
 import Footer from "../components/Footer.jsx"
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function Works() {
   const [works, setWorks] = useState([])
   const [activeCategory, setActiveCategory] = useState("All")
@@ -12,7 +14,7 @@ export default function Works() {
   useEffect(() => {
     const fetchWorks = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/features")
+        const response = await axios.get(`${API_URL}/features`)
         setWorks(response.data)
         setLoading(false)
       } catch (error) {
