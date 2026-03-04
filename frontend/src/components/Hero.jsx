@@ -71,7 +71,7 @@ export default function Hero() {
 
   if (loading) {
     return (
-      <section className="relative h-screen w-full bg-gray-900 flex items-center justify-center">
+      <section className="relative h-[50vh] md:h-screen w-full bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </section>
     );
@@ -79,7 +79,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-[50vh] md:h-screen w-full overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
