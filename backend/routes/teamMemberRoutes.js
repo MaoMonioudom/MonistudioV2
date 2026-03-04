@@ -10,16 +10,17 @@ const {
   reorderTeamMembers,
 } = require('../controllers/teamMemberController');
 const { upload } = require('../config/cloudinary');
+const { protect } = require('../middleware/authMiddleware');
 
 // Public routes
 router.get('/', getTeamMembers);
 router.get('/all', getAllTeamMembers);
 router.get('/:id', getTeamMember);
 
-// Admin routes
-router.post('/', upload.single('image'), createTeamMember);
-router.put('/reorder', reorderTeamMembers);
-router.put('/:id', upload.single('image'), updateTeamMember);
-router.delete('/:id', deleteTeamMember);
+// Admin routes (protected)
+router.post('/', protect, upload.single('image'), createTeamMember);
+router.put('/reorder', protect, reorderTeamMembers);
+router.put('/:id', protect, upload.single('image'), updateTeamMember);
+router.delete('/:id', protect, deleteTeamMember);
 
 module.exports = router;

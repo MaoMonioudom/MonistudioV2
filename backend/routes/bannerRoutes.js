@@ -10,16 +10,17 @@ const {
   reorderBanners,
 } = require('../controllers/bannerController');
 const { upload } = require('../config/cloudinary');
+const { protect } = require('../middleware/authMiddleware');
 
 // Public routes
 router.get('/', getBanners);
 router.get('/all', getAllBanners);
 router.get('/:id', getBanner);
 
-// Admin routes
-router.post('/', upload.single('image'), createBanner);
-router.put('/reorder', reorderBanners);
-router.put('/:id', upload.single('image'), updateBanner);
-router.delete('/:id', deleteBanner);
+// Admin routes (protected)
+router.post('/', protect, upload.single('image'), createBanner);
+router.put('/reorder', protect, reorderBanners);
+router.put('/:id', protect, upload.single('image'), updateBanner);
+router.delete('/:id', protect, deleteBanner);
 
 module.exports = router;

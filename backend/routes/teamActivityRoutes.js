@@ -8,11 +8,15 @@ const {
   deleteTeamActivity,
 } = require('../controllers/teamActivityController');
 const { upload } = require('../config/cloudinary');
+const { protect } = require('../middleware/authMiddleware');
 
+// Public routes
 router.get('/', getTeamActivities);
 router.get('/:id', getTeamActivity);
-router.post('/', upload.single('image'), createTeamActivity);
-router.put('/:id', upload.single('image'), updateTeamActivity);
-router.delete('/:id', deleteTeamActivity);
+
+// Admin routes (protected)
+router.post('/', protect, upload.single('image'), createTeamActivity);
+router.put('/:id', protect, upload.single('image'), updateTeamActivity);
+router.delete('/:id', protect, deleteTeamActivity);
 
 module.exports = router;
