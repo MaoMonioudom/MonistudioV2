@@ -1,0 +1,451 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiUser, FiArrowUp, FiArrowDown, FiEye, FiEyeOff } from 'react-icons/fi';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const TeamMembers = () => {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [editingMember, setEditingMember] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    bio: '',
+    image: null,
+    order: 0,
+    isActive: true,
+  });
+  const [imagePreview, setImagePreview] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/team-members/all`);
+      setMembers(response.data);
+    } catch (err) {
+      console.error('Error fetching team members:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenModal = (member = null) => {
+    if (member) {
+      setEditingMember(member);
+      setFormData({
+        name: member.name,
+        role: member.role,
+        bio: member.bio || '',
+        image: null,
+        order: member.order,
+        isActive: member.isActive,
+      });
+      setImagePreview(member.imageUrl);
+    } else {
+      setEditingMember(null);
+      setFormData({
+        name: '',
+        role: '',
+        bio: '',
+        image: null,
+        order: members.length,
+        isActive: true,
+      });
+      setImagePreview(null);
+    }
+    setError('');
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingMember(null);
+    setFormData({
+      name: '',
+      role: '',
+      bio: '',
+      image: null,
+      order: 0,
+      isActive: true,
+    });
+    setImagePreview(null);
+    setError('');
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('role', formData.role);
+      data.append('bio', formData.bio);
+      data.append('order', formData.order);
+      data.append('isActive', formData.isActive);
+      if (formData.image) {
+        data.append('image', formData.image);
+      }
+
+      const token = localStorage.getItem('adminToken');
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      if (editingMember) {
+        await axios.put(`${API_URL}/team-members/${editingMember._id}`, data, config);
+      } else {
+        await axios.post(`${API_URL}/team-members`, data, config);
+      }
+
+      await fetchMembers();
+      handleCloseModal();
+    } catch (err) {
+      setError(err.response?.data?.message || 'An error occurred');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this team member?')) return;
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      await axios.delete(`${API_URL}/team-members/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      await fetchMembers();
+    } catch (err) {
+      console.error('Error deleting team member:', err);
+      alert('Failed to delete team member');
+    }
+  };
+
+  const handleToggleActive = async (member) => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      await axios.put(
+        `${API_URL}/team-members/${member._id}`,
+        { isActive: !member.isActive },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      await fetchMembers();
+    } catch (err) {
+      console.error('Error toggling member status:', err);
+    }
+  };
+
+  const handleReorder = async (index, direction) => {
+    const newMembers = [...members];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+    if (targetIndex < 0 || targetIndex >= newMembers.length) return;
+
+    // Swap the members
+    [newMembers[index], newMembers[targetIndex]] = [newMembers[targetIndex], newMembers[index]];
+
+    // Update order values
+    const memberOrders = newMembers.map((member, idx) => ({
+      id: member._id,
+      order: idx,
+    }));
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      await axios.put(
+        `${API_URL}/team-members/reorder`,
+        { memberOrders },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      await fetchMembers();
+    } catch (err) {
+      console.error('Error reordering team members:', err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Team Members</h2>
+          <p className="text-gray-400 mt-1">Manage your team members displayed on the About page</p>
+        </div>
+        <button
+          onClick={() => handleOpenModal()}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+        >
+          <FiPlus size={20} />
+          Add Member
+        </button>
+      </div>
+
+      {/* Members List */}
+      {members.length === 0 ? (
+        <div className="bg-gray-800 rounded-xl p-12 text-center border border-gray-700">
+          <FiUser className="mx-auto text-gray-600 mb-4" size={48} />
+          <h3 className="text-xl font-semibold text-white mb-2">No team members yet</h3>
+          <p className="text-gray-400 mb-4">Start by adding your first team member</p>
+          <button
+            onClick={() => handleOpenModal()}
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+          >
+            <FiPlus size={20} />
+            Add Member
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {members.map((member, index) => (
+            <div
+              key={member._id}
+              className={`bg-gray-800 rounded-xl overflow-hidden border ${
+                member.isActive ? 'border-gray-700' : 'border-gray-700/50 opacity-60'
+              } hover:border-gray-600 transition`}
+            >
+              <div className="flex items-stretch">
+                {/* Image */}
+                <div className="w-32 h-32 flex-shrink-0">
+                  {member.imageUrl ? (
+                    <img
+                      src={member.imageUrl}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                      <FiUser className="text-gray-500" size={32} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 p-4 flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-lg font-semibold text-white">{member.name}</h3>
+                      {!member.isActive && (
+                        <span className="text-xs bg-yellow-600/20 text-yellow-400 px-2 py-1 rounded">
+                          Hidden
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-blue-400 text-sm mb-1">{member.role}</p>
+                    {member.bio && (
+                      <p className="text-gray-400 text-sm line-clamp-2">{member.bio}</p>
+                    )}
+                    <p className="text-gray-500 text-xs mt-1">Order: {member.order + 1}</p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2">
+                    {/* Reorder buttons */}
+                    <div className="flex flex-col gap-1 mr-2">
+                      <button
+                        onClick={() => handleReorder(index, 'up')}
+                        disabled={index === 0}
+                        className="p-1 bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-white rounded transition disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Move up"
+                      >
+                        <FiArrowUp size={14} />
+                      </button>
+                      <button
+                        onClick={() => handleReorder(index, 'down')}
+                        disabled={index === members.length - 1}
+                        className="p-1 bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-white rounded transition disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Move down"
+                      >
+                        <FiArrowDown size={14} />
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => handleToggleActive(member)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg transition text-sm ${
+                        member.isActive
+                          ? 'bg-green-600/20 hover:bg-green-600/40 text-green-500'
+                          : 'bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-500'
+                      }`}
+                      title={member.isActive ? 'Hide member' : 'Show member'}
+                    >
+                      {member.isActive ? <FiEye size={16} /> : <FiEyeOff size={16} />}
+                    </button>
+
+                    <button
+                      onClick={() => handleOpenModal(member)}
+                      className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition text-sm"
+                    >
+                      <FiEdit2 size={16} />
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(member._id)}
+                      className="flex items-center gap-2 bg-red-600/20 hover:bg-red-600/40 text-red-500 px-3 py-2 rounded-lg transition text-sm"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b border-gray-700 sticky top-0 bg-gray-800">
+              <h3 className="text-xl font-semibold text-white">
+                {editingMember ? 'Edit Team Member' : 'Add Team Member'}
+              </h3>
+              <button
+                onClick={handleCloseModal}
+                className="text-gray-400 hover:text-white transition"
+              >
+                <FiX size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="p-4 space-y-4">
+              {error && (
+                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition"
+                  placeholder="Team member name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Role *
+                </label>
+                <input
+                  type="text"
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition"
+                  placeholder="e.g., Founder & Creative Director"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Bio
+                </label>
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition resize-none"
+                  placeholder="Short bio about this team member"
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Photo *
+                </label>
+                <div className="space-y-3">
+                  {imagePreview && (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-lg"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-700 file:text-white hover:file:bg-gray-600 file:cursor-pointer cursor-pointer"
+                    required={!editingMember}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.isActive}
+                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+                <span className="text-gray-300 text-sm">Active (visible on About page)</span>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-lg transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : editingMember ? 'Update' : 'Create'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default TeamMembers;
