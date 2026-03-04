@@ -2,13 +2,15 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function Gallery() {
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/features")
+        const response = await axios.get(`${API_URL}/features`)
         setProjects(response.data)
       } catch (error) {
         console.error("Error fetching projects:", error)

@@ -4,6 +4,8 @@ import axios from "axios";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const FeatureDetail = () => {
     const { id } = useParams();
     const [feature, setFeature] = useState(null);
@@ -12,7 +14,7 @@ const FeatureDetail = () => {
     useEffect(() => {
         const fetchFeature = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/features/${id}`);
+                const response = await axios.get(`${API_URL}/features/${id}`);
                 setFeature(response.data);
                 setLoading(false);
             } catch (error) {

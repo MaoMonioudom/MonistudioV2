@@ -4,6 +4,8 @@ import axios from "axios";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const ServiceDetail = () => {
   const { id } = useParams();
   const [service, setService] = useState(null);
@@ -14,8 +16,8 @@ const ServiceDetail = () => {
     const fetchData = async () => {
       try {
         const [serviceRes, featuresRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/services/${id}`),
-          axios.get(`http://localhost:5000/api/features`)
+          axios.get(`${API_URL}/services/${id}`),
+          axios.get(`${API_URL}/features`)
         ]);
         setService(serviceRes.data);
         // Filter features that belong to this service

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function Services() {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
@@ -9,7 +11,7 @@ export default function Services() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/services")
+        const response = await axios.get(`${API_URL}/services`)
         setServices(response.data)
         setLoading(false)
       } catch (error) {
