@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaGithub } from "react-icons/fa";
 
@@ -22,7 +22,7 @@ export default function Nav() {
 
         {/* Logo */}
         <Link to="/">
-          <img src={logo} alt="Moni Logo" className="h-10 w-auto object-contain" />
+          <img src={logo} alt="Moni Logo" className="h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop Menu */}

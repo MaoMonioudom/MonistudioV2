@@ -21,3 +21,72 @@
 .animation-delay-200 {
   animation-delay: 0.2s;
 }
+
+/* Trusted by marquee */
+.trusted-by-section {
+  background: linear-gradient(180deg, #050505 0%, #0d0d0d 100%);
+}
+
+@keyframes trustedByScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.trusted-by-track {
+  animation: trustedByScroll 50s linear infinite;
+}
+
+.trusted-by-track:hover {
+  animation-play-state: paused;
+}
+
+.trusted-by-track-row-1 {
+  animation-duration: 46s;
+}
+
+.trusted-by-track-row-2 {
+  animation-duration: 58s;
+  animation-direction: reverse;
+  animation-delay: -12s;
+}
+
+.trusted-by-fade-edges::before,
+.trusted-by-fade-edges::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 64px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.trusted-by-fade-edges::before {
+  left: 0;
+  background: linear-gradient(to right, #050505, rgba(5, 5, 5, 0));
+}
+
+.trusted-by-fade-edges::after {
+  right: 0;
+  background: linear-gradient(to left, #050505, rgba(5, 5, 5, 0));
+}
+
+@media (max-width: 768px) {
+  .trusted-by-track-row-1 {
+    animation-duration: 50s;
+  }
+
+  .trusted-by-track-row-2 {
+    animation-duration: 62s;
+    animation-delay: -9s;
+  }
+
+  .trusted-by-fade-edges::before,
+  .trusted-by-fade-edges::after {
+    width: 38px;
+  }
+}

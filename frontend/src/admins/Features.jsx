@@ -19,7 +19,8 @@ const Features = () => {
     moreImages: [],
   });
   const [imagePreview, setImagePreview] = useState(null);
-  const [moreImagePreviews, setMoreImagePreviews] = useState([]);
+  const [existingMoreImages, setExistingMoreImages] = useState([]);
+  const [newMoreImagePreviews, setNewMoreImagePreviews] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -54,7 +55,8 @@ const Features = () => {
         moreImages: [],
       });
       setImagePreview(feature.imageUrl);
-      setMoreImagePreviews(feature.moreImages || []);
+      setExistingMoreImages(feature.moreImages || []);
+      setNewMoreImagePreviews([]);
     } else {
       setEditingFeature(null);
       setFormData({
@@ -66,7 +68,8 @@ const Features = () => {
         moreImages: [],
       });
       setImagePreview(null);
-      setMoreImagePreviews([]);
+      setExistingMoreImages([]);
+      setNewMoreImagePreviews([]);
     }
     setError('');
     setShowModal(true);
@@ -84,7 +87,8 @@ const Features = () => {
       moreImages: [],
     });
     setImagePreview(null);
-    setMoreImagePreviews([]);
+    setExistingMoreImages([]);
+    setNewMoreImagePreviews([]);
     setError('');
   };
 
@@ -101,27 +105,23 @@ const Features = () => {
     if (files.length > 0) {
       setFormData({ ...formData, moreImages: [...formData.moreImages, ...files] });
       const newPreviews = files.map((file) => URL.createObjectURL(file));
-      setMoreImagePreviews([...moreImagePreviews, ...newPreviews]);
+      setNewMoreImagePreviews((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const removeMoreImage = (index, isExisting = false) => {
     if (isExisting) {
-      // Remove from existing images (already uploaded)
-      const updated = [...moreImagePreviews];
+      const updated = [...existingMoreImages];
       updated.splice(index, 1);
-      setMoreImagePreviews(updated);
+      setExistingMoreImages(updated);
     } else {
-      // Remove from new uploads
-      const existingCount = editingFeature?.moreImages?.length || 0;
-      const newIndex = index - existingCount;
       const updatedFiles = [...formData.moreImages];
-      updatedFiles.splice(newIndex, 1);
+      updatedFiles.splice(index, 1);
       setFormData({ ...formData, moreImages: updatedFiles });
-      
-      const updatedPreviews = [...moreImagePreviews];
+
+      const updatedPreviews = [...newMoreImagePreviews];
       updatedPreviews.splice(index, 1);
-      setMoreImagePreviews(updatedPreviews);
+      setNewMoreImagePreviews(updatedPreviews);
     }
   };
 
@@ -144,6 +144,9 @@ const Features = () => {
       formData.moreImages.forEach((file) => {
         data.append('moreImages', file);
       });
+      if (editingFeature) {
+        data.append('existingMoreImages', JSON.stringify(existingMoreImages));
+      }
 
       const token = localStorage.getItem('adminToken');
       const config = {
@@ -389,9 +392,9 @@ const Features = () => {
                   Additional Images
                 </label>
                 <div className="space-y-3">
-                  {moreImagePreviews.length > 0 && (
+                  {existingMoreImages.length > 0 && (
                     <div className="grid grid-cols-4 gap-2">
-                      {moreImagePreviews.map((preview, index) => (
+                      {existingMoreImages.map((preview, index) => (
                         <div key={index} className="relative group">
                           <img
                             src={preview}
@@ -400,7 +403,27 @@ const Features = () => {
                           />
                           <button
                             type="button"
-                            onClick={() => removeMoreImage(index, index < (editingFeature?.moreImages?.length || 0))}
+                            onClick={() => removeMoreImage(index, true)}
+                            className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+                          >
+                            <FiX size={12} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {newMoreImagePreviews.length > 0 && (
+                    <div className="grid grid-cols-4 gap-2">
+                      {newMoreImagePreviews.map((preview, index) => (
+                        <div key={`new-${index}`} className="relative group">
+                          <img
+                            src={preview}
+                            alt={`New additional ${index + 1}`}
+                            className="w-full h-20 object-cover rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeMoreImage(index, false)}
                             className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
                           >
                             <FiX size={12} />

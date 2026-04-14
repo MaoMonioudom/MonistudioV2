@@ -24,9 +24,9 @@ export default function TrustedBy() {
 
   if (loading) {
     return (
-      <section className="py-16 px-6 bg-[#0a0a0a]">
+      <section className="trusted-by-section  py-10 md:py-12 px-4 md:px-6">
         <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white/80"></div>
         </div>
       </section>
     )
@@ -36,39 +36,82 @@ export default function TrustedBy() {
     return null
   }
 
+  const topRowPartners = partners.filter((_, index) => index % 2 === 0)
+  const bottomRowPartners = partners.filter((_, index) => index % 2 === 1)
+
+  const firstRowSource = topRowPartners.length > 0 ? topRowPartners : partners
+  const secondRowSource =
+    bottomRowPartners.length > 0
+      ? bottomRowPartners
+      : partners.length > 1
+        ? [...partners.slice(1), partners[0]]
+        : partners
+
+  const firstMarqueePartners = [...firstRowSource, ...firstRowSource]
+  const secondMarqueePartners = [...secondRowSource, ...secondRowSource]
+
   return (
-    <section className="py-16 px-6 bg-[#0a0a0a] border-t border-white/10">
-      {/* Section Title */}
-      <div className="text-center mb-12">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
+    <section className="trusted-by-section relative overflow-hidden py-10 md:py-12 border-y border-white/10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="text-center mb-7 md:mb-9">
+          <p className="text-[11px] md:text-xs tracking-[0.32em] font-semibold uppercase text-white/60 mb-2">
+            Partnerships
+          </p>
+          <h2 className="text-2xl md:text-3xl font-black text-white">
           Trusted By
-        </h2>
-        <p className="text-gray-400 mt-3 max-w-2xl mx-auto">
-          Proud to have worked with these amazing organizations
-        </p>
+          </h2>
+        </div>
       </div>
 
-      {/* Partners Grid */}
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-          {partners.map((partner) => (
-            <a
-              key={partner._id}
-              href={partner.website || '#'}
-              target={partner.website ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-              className={`group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl p-6 transition duration-300 ${
-                partner.website ? 'cursor-pointer' : 'cursor-default'
-              }`}
-              onClick={(e) => !partner.website && e.preventDefault()}
-            >
-              <img
-                src={partner.logoUrl}
-                alt={partner.name}
-                className="h-12 md:h-16 w-auto object-contain transition duration-300 opacity-80 group-hover:opacity-100"
-              />
-            </a>
-          ))}
+      <div className="space-y-4 md:space-y-5">
+        <div className="relative trusted-by-fade-edges">
+          <div className="trusted-by-track trusted-by-track-row-1 flex items-center gap-5 md:gap-8 w-max px-4 md:px-6">
+            {firstMarqueePartners.map((partner, index) => (
+              <a
+                key={`row1-${partner._id}-${index}`}
+                href={partner.website || '#'}
+                target={partner.website ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-white/5 border border-white/15 shadow-[0_10px_24px_rgba(0,0,0,0.35)] backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
+                  partner.website ? 'cursor-pointer hover:-translate-y-0.5 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]' : 'cursor-default'
+                }`}
+                onClick={(e) => !partner.website && e.preventDefault()}
+                aria-label={partner.name}
+              >
+                <img
+                  src={partner.logoUrl}
+                  alt={partner.name}
+                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-85 group-hover:opacity-100 transition duration-300"
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative trusted-by-fade-edges">
+          <div className="trusted-by-track trusted-by-track-row-2 flex items-center gap-5 md:gap-8 w-max px-4 md:px-6">
+            {secondMarqueePartners.map((partner, index) => (
+              <a
+                key={`row2-${partner._id}-${index}`}
+                href={partner.website || '#'}
+                target={partner.website ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-white/5 border border-white/15 shadow-[0_10px_24px_rgba(0,0,0,0.35)] backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
+                  partner.website ? 'cursor-pointer hover:-translate-y-0.5 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]' : 'cursor-default'
+                }`}
+                onClick={(e) => !partner.website && e.preventDefault()}
+                aria-label={partner.name}
+              >
+                <img
+                  src={partner.logoUrl}
+                  alt={partner.name}
+                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-85 group-hover:opacity-100 transition duration-300"
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

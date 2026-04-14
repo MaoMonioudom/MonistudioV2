@@ -84,6 +84,32 @@ const updateFeature = async (req, res) => {
     let imageUrl = req.body.imageUrl || feature.imageUrl;
     let moreImages = feature.moreImages || [];
 
+    // Keep only explicitly retained existing additional images when provided.
+    if (Object.prototype.hasOwnProperty.call(req.body, 'existingMoreImages')) {
+      let keptExistingImages = [];
+
+      if (Array.isArray(req.body.existingMoreImages)) {
+        keptExistingImages = req.body.existingMoreImages;
+      } else if (typeof req.body.existingMoreImages === 'string') {
+        try {
+          const parsed = JSON.parse(req.body.existingMoreImages);
+          keptExistingImages = Array.isArray(parsed) ? parsed : [];
+        } catch (parseError) {
+          keptExistingImages = [];
+        }
+      }
+
+      const removedImages = (feature.moreImages || []).filter(
+        (img) => !keptExistingImages.includes(img)
+      );
+
+      for (const removedImage of removedImages) {
+        await deleteImage(removedImage);
+      }
+
+      moreImages = keptExistingImages;
+    }
+
     // Update primary image
     if (req.files && req.files['image']) {
       if (feature.imageUrl) {
@@ -99,9 +125,6 @@ const updateFeature = async (req, res) => {
         moreImages.push(file.path);
       });
     }
-
-    // If update requests specifically clears or replaces (complex logic, for now assume append/replace per request)
-    // You might want a way to remove specific images later.
 
     const updatedData = {
       ...req.body,
