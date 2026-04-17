@@ -24,7 +24,7 @@
 
 /* Trusted by marquee */
 .trusted-by-section {
-  background: linear-gradient(180deg, #050505 0%, #0d0d0d 100%);
+  background: #0a0a0a;
 }
 
 @keyframes trustedByScroll {
@@ -67,12 +67,12 @@
 
 .trusted-by-fade-edges::before {
   left: 0;
-  background: linear-gradient(to right, #050505, rgba(5, 5, 5, 0));
+  background: linear-gradient(to right, #0a0a0a, rgba(10, 10, 10, 0));
 }
 
 .trusted-by-fade-edges::after {
   right: 0;
-  background: linear-gradient(to left, #050505, rgba(5, 5, 5, 0));
+  background: linear-gradient(to left, #0a0a0a, rgba(10, 10, 10, 0));
 }
 
 @media (max-width: 768px) {

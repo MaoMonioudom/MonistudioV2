@@ -51,7 +51,7 @@ export default function TrustedBy() {
   const secondMarqueePartners = [...secondRowSource, ...secondRowSource]
 
   return (
-    <section className="trusted-by-section relative overflow-hidden py-10 md:py-12 border-y border-white/10">
+    <section className="trusted-by-section relative overflow-hidden py-10 md:py-12 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="text-center mb-7 md:mb-9">
           <p className="text-[11px] md:text-xs tracking-[0.32em] font-semibold uppercase text-white/60 mb-2">
@@ -72,8 +72,8 @@ export default function TrustedBy() {
                 href={partner.website || '#'}
                 target={partner.website ? '_blank' : '_self'}
                 rel="noopener noreferrer"
-                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-white/5 border border-white/15 shadow-[0_10px_24px_rgba(0,0,0,0.35)] backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-                  partner.website ? 'cursor-pointer hover:-translate-y-0.5 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]' : 'cursor-default'
+                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-[#0a0a0a] flex items-center justify-center transition-all duration-300 ${
+                  partner.website ? 'cursor-pointer hover:bg-white/5' : 'cursor-default'
                 }`}
                 onClick={(e) => !partner.website && e.preventDefault()}
                 aria-label={partner.name}
@@ -81,7 +81,7 @@ export default function TrustedBy() {
                 <img
                   src={partner.logoUrl}
                   alt={partner.name}
-                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-85 group-hover:opacity-100 transition duration-300"
+                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
                   loading="lazy"
                 />
               </a>
@@ -97,8 +97,8 @@ export default function TrustedBy() {
                 href={partner.website || '#'}
                 target={partner.website ? '_blank' : '_self'}
                 rel="noopener noreferrer"
-                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-white/5 border border-white/15 shadow-[0_10px_24px_rgba(0,0,0,0.35)] backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-                  partner.website ? 'cursor-pointer hover:-translate-y-0.5 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]' : 'cursor-default'
+                className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-[#0a0a0a] flex items-center justify-center transition-all duration-300 ${
+                  partner.website ? 'cursor-pointer hover:bg-white/5' : 'cursor-default'
                 }`}
                 onClick={(e) => !partner.website && e.preventDefault()}
                 aria-label={partner.name}
@@ -106,7 +106,7 @@ export default function TrustedBy() {
                 <img
                   src={partner.logoUrl}
                   alt={partner.name}
-                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-85 group-hover:opacity-100 transition duration-300"
+                  className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
                   loading="lazy"
                 />
               </a>

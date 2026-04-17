@@ -41,36 +41,82 @@ export default function Services() {
       ) : services.length === 0 ? (
         <div className="text-gray-400 text-center text-xl">No services available at the moment.</div>
       ) : (
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-          {services.map((service) => (
-            <Link
-              to={`/service/${service._id}`}
-              key={service._id}
-              className="group bg-black/40 border border-white/10 rounded-xl overflow-hidden hover:border-white/30 transition cursor-pointer"
-            >
-              {/* Image */}
-              {service.imageUrl && (
-                <div className="overflow-hidden">
-                  <img
-                    src={service.imageUrl}
-                    alt={service.title}
-                    className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
-                  />
-                </div>
-              )}
+        <>
+          {/* Mobile horizontal scroll, Desktop grid */}
+          <div className="flex sm:hidden overflow-x-auto gap-6 pb-4 -mx-6 px-6">
+            {services.slice(0, 6).map((service) => (
+              <Link
+                to={`/service/${service._id}`}
+                key={service._id}
+                className="group bg-black/40 border border-white/10 rounded-xl overflow-hidden hover:border-white/30 transition cursor-pointer flex-shrink-0 w-72"
+              >
+                {/* Image */}
+                {service.imageUrl && (
+                  <div className="overflow-hidden">
+                    <img
+                      src={service.imageUrl}
+                      alt={service.title}
+                      className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
+                    />
+                  </div>
+                )}
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-white font-bold text-xl mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-white font-bold text-xl mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop grid view */}
+          <div className="hidden sm:block">
+            <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-12">
+              {services.slice(0, 6).map((service) => (
+                <Link
+                  to={`/service/${service._id}`}
+                  key={service._id}
+                  className="group bg-black/40 border border-white/10 rounded-xl overflow-hidden hover:border-white/30 transition cursor-pointer"
+                >
+                  {/* Image */}
+                  {service.imageUrl && (
+                    <div className="overflow-hidden">
+                      <img
+                        src={service.imageUrl}
+                        alt={service.title}
+                        className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
+                      />
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-white font-bold text-xl mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      {service.description}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          {/* </div> */}
+          <div className="mt-12 text-center">
+            <Link 
+              to="/service"
+              className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-gray-200 transition"
+            >
+              View All Services
             </Link>
-          ))}
-        </div>
+          </div>
+        </>
       )}
     </section>
   )

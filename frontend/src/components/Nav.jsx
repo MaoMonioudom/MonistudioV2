@@ -8,7 +8,7 @@ export default function Nav() {
 
   // Menu items and their routes
   const menuLinks = {
-    Works: "/works",
+    Portfolio: "/portfolio",
     Services: "/service",
     About: "/about",
     Contact: "/contact",

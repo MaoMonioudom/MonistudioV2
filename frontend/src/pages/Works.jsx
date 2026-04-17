@@ -10,6 +10,8 @@ export default function Works() {
   const [works, setWorks] = useState([])
   const [activeCategory, setActiveCategory] = useState("All")
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   useEffect(() => {
     const fetchWorks = async () => {
@@ -25,6 +27,11 @@ export default function Works() {
 
     fetchWorks()
   }, [])
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }, [currentPage])
 
   // Dynamically generate categories from fetched data
   const categories = ["All", ...new Set(works.map(work => work.serviceId?.title).filter(Boolean))]
@@ -43,7 +50,7 @@ export default function Works() {
         {/* Page Title */}
         <div className="text-center mb-14">
           <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Our Works
+            Our Portfolio
           </h1>
           <p className="text-gray-400 mt-4">
             A selection of projects crafted with passion
@@ -55,7 +62,10 @@ export default function Works() {
           {categories.map(category => (
             <button
               key={category}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => {
+                setActiveCategory(category)
+                setCurrentPage(1)
+              }}
               className={`uppercase text-sm font-bold tracking-wider transition pb-1
                 ${
                   activeCategory === category
@@ -74,8 +84,9 @@ export default function Works() {
         ) : works.length === 0 ? (
           <div className="text-gray-400 text-center text-xl">No works found yet.</div>
         ) : (
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-            {filteredWorks.map((work) => (
+          <>
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+              {filteredWorks.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((work) => (
               <Link 
                 to={`/feature/${work._id}`} 
                 key={work._id} 
@@ -109,7 +120,45 @@ export default function Works() {
 
               </Link>
             ))}
-          </div>
+            </div>
+
+            {/* Pagination */}
+            {filteredWorks.length > itemsPerPage && (
+              <div className="mt-12 flex justify-center items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                >
+                  Previous
+                </button>
+
+                <div className="flex gap-2">
+                  {Array.from({ length: Math.ceil(filteredWorks.length / itemsPerPage) }).map((_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`px-3 py-2 rounded-lg font-bold transition ${
+                        currentPage === i + 1
+                          ? "bg-white text-black"
+                          : "bg-gray-700 text-white hover:bg-gray-600"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(Math.min(Math.ceil(filteredWorks.length / itemsPerPage), currentPage + 1))}
+                  disabled={currentPage === Math.ceil(filteredWorks.length / itemsPerPage)}
+                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
 

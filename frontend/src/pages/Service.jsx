@@ -9,6 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 export default function Service() {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -24,6 +26,11 @@ export default function Service() {
 
     fetchServices()
   }, [])
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }, [currentPage])
 
   return (
     <>
@@ -48,8 +55,9 @@ export default function Service() {
         ) : services.length === 0 ? (
           <div className="text-gray-400 text-center text-xl">No services available at the moment.</div>
         ) : (
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-            {services.map((service) => (
+          <>
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+              {services.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((service) => (
               <Link
                 to={`/service/${service._id}`}
                 key={service._id}
@@ -77,7 +85,45 @@ export default function Service() {
                 </div>
               </Link>
             ))}
-          </div>
+            </div>
+
+            {/* Pagination */}
+            {services.length > itemsPerPage && (
+              <div className="mt-12 flex justify-center items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                >
+                  Previous
+                </button>
+
+                <div className="flex gap-2">
+                  {Array.from({ length: Math.ceil(services.length / itemsPerPage) }).map((_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`px-3 py-2 rounded-lg font-bold transition ${
+                        currentPage === i + 1
+                          ? "bg-white text-black"
+                          : "bg-gray-700 text-white hover:bg-gray-600"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(Math.min(Math.ceil(services.length / itemsPerPage), currentPage + 1))}
+                  disabled={currentPage === Math.ceil(services.length / itemsPerPage)}
+                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
       <Footer />
