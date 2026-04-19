@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -13,6 +13,7 @@ const Services = () => {
     title: '',
     description: '',
     image: null,
+    showOnHome: false,
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -40,11 +41,12 @@ const Services = () => {
         title: service.title,
         description: service.description,
         image: null,
+        showOnHome: service.showOnHome || false,
       });
       setImagePreview(service.imageUrl);
     } else {
       setEditingService(null);
-      setFormData({ title: '', description: '', image: null });
+      setFormData({ title: '', description: '', image: null, showOnHome: false });
       setImagePreview(null);
     }
     setError('');
@@ -54,7 +56,7 @@ const Services = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingService(null);
-    setFormData({ title: '', description: '', image: null });
+    setFormData({ title: '', description: '', image: null, showOnHome: false });
     setImagePreview(null);
     setError('');
   };
@@ -76,6 +78,7 @@ const Services = () => {
       const data = new FormData();
       data.append('title', formData.title);
       data.append('description', formData.description);
+      data.append('showOnHome', formData.showOnHome);
       if (formData.image) {
         data.append('image', formData.image);
       }
@@ -118,6 +121,42 @@ const Services = () => {
     }
   };
 
+  const handleToggleShowOnHome = async (service) => {
+    // Check if trying to turn ON and already at 6 limit
+    if (!service.showOnHome) {
+      const countShowingOnHome = services.filter(s => s.showOnHome).length;
+      if (countShowingOnHome >= 6) {
+        alert('You can only show maximum 6 services on the home page. Please remove one first.');
+        return;
+      }
+    }
+
+    // Optimistic update - update UI immediately
+    const updatedServices = services.map(s =>
+      s._id === service._id ? { ...s, showOnHome: !s.showOnHome } : s
+    );
+    setServices(updatedServices);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      await axios.put(
+        `${API_URL}/services/${service._id}`,
+        { showOnHome: !service.showOnHome },
+        config
+      );
+      // API call succeeded, no need to refetch since we already updated state
+    } catch (err) {
+      console.error('Error toggling show on home:', err);
+      // Revert the optimistic update on error
+      setServices(services);
+      alert('Failed to update service');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -142,6 +181,28 @@ const Services = () => {
           Add Service
         </button>
       </div>
+
+      {/* Home Featured Services Section */}
+      {services.filter(s => s.showOnHome).length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white">Featured on Home Page</h3>
+            <span className="text-xs bg-green-600/20 text-green-400 px-3 py-1 rounded-full">
+              {services.filter(s => s.showOnHome).length}/6
+            </span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {services.filter(s => s.showOnHome).map((service) => (
+              <div key={service._id} className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-gray-600 transition group">
+                {service.imageUrl && <img src={service.imageUrl} alt={service.title} className="w-full h-24 object-cover group-hover:scale-105 transition" />}
+                <div className="p-2">
+                  <p className="text-white text-xs font-semibold truncate">{service.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Services Grid */}
       {services.length === 0 ? (
@@ -176,11 +237,30 @@ const Services = () => {
                 </div>
               )}
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">{service.title}</h3>
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-white">{service.title}</h3>
+                  {service.showOnHome && (
+                    <span className="text-xs bg-green-600/20 text-green-400 px-2 py-1 rounded">
+                      On Home
+                    </span>
+                  )}
+                </div>
                 <p className="text-gray-400 text-sm line-clamp-2 mb-4">
                   {service.description}
                 </p>
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleToggleShowOnHome(service)}
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition text-sm font-medium ${
+                      service.showOnHome
+                        ? 'bg-green-600/20 hover:bg-green-600/30 text-green-400'
+                        : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    }`}
+                    title={service.showOnHome ? 'Hide from home' : 'Show on home'}
+                  >
+                    {service.showOnHome ? <FiEye size={16} /> : <FiEyeOff size={16} />}
+                    {service.showOnHome ? 'On Home' : 'Show Home'}
+                  </button>
                   <button
                     onClick={() => handleOpenModal(service)}
                     className="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition text-sm"
@@ -250,6 +330,22 @@ const Services = () => {
                   rows={4}
                   required
                 />
+              </div>
+
+              <div className="flex items-center gap-3 bg-gray-700/50 border border-gray-600 rounded-lg p-4">
+                <input
+                  type="checkbox"
+                  id="showOnHome"
+                  checked={formData.showOnHome}
+                  onChange={(e) => setFormData({ ...formData, showOnHome: e.target.checked })}
+                  className="w-5 h-5 rounded border-gray-500 cursor-pointer"
+                />
+                <label htmlFor="showOnHome" className="text-gray-300 font-medium cursor-pointer flex-1">
+                  Show on Home Page
+                </label>
+                <span className="text-xs text-gray-400">
+                  {formData.showOnHome ? '✓ Visible' : '○ Hidden'}
+                </span>
               </div>
 
               <div>

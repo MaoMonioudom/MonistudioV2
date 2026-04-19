@@ -3,6 +3,7 @@ import axios from "axios";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
 import studioImage from "../assets/heroImg.jpg";
+import InTouchMessage from "../components/InTouchMessage.jsx";
 import teamImage from "../assets/temp.webp";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -190,7 +191,7 @@ export default function About() {
     )}
   </div>
 </section>
-
+        <InTouchMessage />
       <Footer />
     </>
   );

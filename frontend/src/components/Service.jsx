@@ -44,7 +44,7 @@ export default function Services() {
         <>
           {/* Mobile horizontal scroll, Desktop grid */}
           <div className="flex sm:hidden overflow-x-auto gap-6 pb-4 -mx-6 px-6">
-            {services.slice(0, 6).map((service) => (
+            {services.filter(service => service.showOnHome).slice(0, 6).map((service) => (
               <Link
                 to={`/service/${service._id}`}
                 key={service._id}
@@ -77,7 +77,7 @@ export default function Services() {
           {/* Desktop grid view */}
           <div className="hidden sm:block">
             <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-12">
-              {services.slice(0, 6).map((service) => (
+              {services.filter(service => service.showOnHome).slice(0, 6).map((service) => (
                 <Link
                   to={`/service/${service._id}`}
                   key={service._id}

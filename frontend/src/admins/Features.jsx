@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -17,6 +17,7 @@ const Features = () => {
     serviceId: '',
     image: null,
     moreImages: [],
+    showOnHome: false,
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [existingMoreImages, setExistingMoreImages] = useState([]);
@@ -53,6 +54,7 @@ const Features = () => {
         serviceId: feature.serviceId?._id || '',
         image: null,
         moreImages: [],
+        showOnHome: feature.showOnHome || false,
       });
       setImagePreview(feature.imageUrl);
       setExistingMoreImages(feature.moreImages || []);
@@ -66,6 +68,7 @@ const Features = () => {
         serviceId: '',
         image: null,
         moreImages: [],
+        showOnHome: false,
       });
       setImagePreview(null);
       setExistingMoreImages([]);
@@ -85,6 +88,7 @@ const Features = () => {
       serviceId: '',
       image: null,
       moreImages: [],
+      showOnHome: false,
     });
     setImagePreview(null);
     setExistingMoreImages([]);
@@ -135,6 +139,7 @@ const Features = () => {
       data.append('title', formData.title);
       data.append('description', formData.description);
       data.append('detailDescription', formData.detailDescription);
+      data.append('showOnHome', formData.showOnHome);
       if (formData.serviceId) {
         data.append('serviceId', formData.serviceId);
       }
@@ -186,6 +191,42 @@ const Features = () => {
     }
   };
 
+  const handleToggleShowOnHome = async (feature) => {
+    // Check if trying to turn ON and already at 6 limit
+    if (!feature.showOnHome) {
+      const countShowingOnHome = features.filter(f => f.showOnHome).length;
+      if (countShowingOnHome >= 6) {
+        alert('You can only show maximum 6 featured works on the home page. Please remove one first.');
+        return;
+      }
+    }
+
+    // Optimistic update - update UI immediately
+    const updatedFeatures = features.map(f =>
+      f._id === feature._id ? { ...f, showOnHome: !f.showOnHome } : f
+    );
+    setFeatures(updatedFeatures);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      await axios.put(
+        `${API_URL}/features/${feature._id}`,
+        { showOnHome: !feature.showOnHome },
+        config
+      );
+      // API call succeeded, no need to refetch since we already updated state
+    } catch (err) {
+      console.error('Error toggling show on home:', err);
+      // Revert the optimistic update on error
+      setFeatures(features);
+      alert('Failed to update feature');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -210,6 +251,31 @@ const Features = () => {
           Add Feature
         </button>
       </div>
+
+      {/* Home Featured Works Section */}
+      {features.filter(f => f.showOnHome).length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white">Featured on Home Page</h3>
+            <span className="text-xs bg-green-600/20 text-green-400 px-3 py-1 rounded-full">
+              {features.filter(f => f.showOnHome).length}/6
+            </span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {features.filter(f => f.showOnHome).map((feature) => (
+              <div key={feature._id} className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-gray-600 transition group">
+                <img src={feature.imageUrl} alt={feature.title} className="w-full h-24 object-cover group-hover:scale-105 transition" />
+                <div className="p-2">
+                  <p className="text-white text-xs font-semibold truncate">{feature.title}</p>
+                  {feature.serviceId && (
+                    <p className="text-gray-500 text-xs truncate">{feature.serviceId.title}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Features Grid */}
       {features.length === 0 ? (
@@ -246,11 +312,18 @@ const Features = () => {
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
-                  {feature.serviceId && (
-                    <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">
-                      {feature.serviceId.title}
-                    </span>
-                  )}
+                  <div className="flex gap-2">
+                    {feature.showOnHome && (
+                      <span className="text-xs bg-green-600/20 text-green-400 px-2 py-1 rounded">
+                        On Home
+                      </span>
+                    )}
+                    {feature.serviceId && (
+                      <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">
+                        {feature.serviceId.title}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <p className="text-gray-400 text-sm line-clamp-2 mb-4">
                   {feature.description}
@@ -261,6 +334,18 @@ const Features = () => {
                   </p>
                 )}
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleToggleShowOnHome(feature)}
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition text-sm font-medium ${
+                      feature.showOnHome
+                        ? 'bg-green-600/20 hover:bg-green-600/30 text-green-400'
+                        : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    }`}
+                    title={feature.showOnHome ? 'Hide from home' : 'Show on home'}
+                  >
+                    {feature.showOnHome ? <FiEye size={16} /> : <FiEyeOff size={16} />}
+                    {feature.showOnHome ? 'On Home' : 'Show Home'}
+                  </button>
                   <button
                     onClick={() => handleOpenModal(feature)}
                     className="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition text-sm"
@@ -336,6 +421,22 @@ const Features = () => {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-gray-700/50 border border-gray-600 rounded-lg p-4">
+                <input
+                  type="checkbox"
+                  id="showOnHome"
+                  checked={formData.showOnHome}
+                  onChange={(e) => setFormData({ ...formData, showOnHome: e.target.checked })}
+                  className="w-5 h-5 rounded border-gray-500 cursor-pointer"
+                />
+                <label htmlFor="showOnHome" className="text-gray-300 font-medium cursor-pointer flex-1">
+                  Show on Home Page
+                </label>
+                <span className="text-xs text-gray-400">
+                  {formData.showOnHome ? '✓ Visible' : '○ Hidden'}
+                </span>
               </div>
 
               <div>

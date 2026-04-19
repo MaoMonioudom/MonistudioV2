@@ -184,11 +184,11 @@ const FeatureDetail = () => {
                     className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
                     onClick={() => setSelectedImage(null)}
                 >
-                    <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+                    <div className="relative max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
                         <img 
                             src={selectedImage} 
                             alt="Full view" 
-                            className="w-full h-auto object-contain rounded-lg"
+                            className="w-auto h-full max-h-[90vh] object-contain rounded-lg"
                         />
                         <button
                             onClick={() => setSelectedImage(null)}

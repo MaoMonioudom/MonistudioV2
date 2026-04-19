@@ -35,7 +35,7 @@ export default function Gallery() {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {projects.slice(0, 6).map((project) => (
+              {projects.filter(project => project.showOnHome).slice(0, 6).map((project) => (
               <Link 
                 to={`/feature/${project._id}`} 
                 key={project._id} 

@@ -26,6 +26,10 @@ const featureSchema = mongoose.Schema(
     moreImages: [{
       type: String, // Array of URLs for additional images
     }],
+    showOnHome: {
+      type: Boolean,
+      default: false, // Admin must explicitly select which features to show
+    },
   },
   {
     timestamps: true,

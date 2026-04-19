@@ -33,6 +33,7 @@ function App() {
         <Route path="/admin/features" element={<Dashboard />} />
         <Route path="/admin/partners" element={<Dashboard />} />
         <Route path="/admin/contact-banners" element={<Dashboard />} />
+        <Route path="/admin/contact-submissions" element={<Dashboard />} />
         <Route path="/admin/team-members" element={<Dashboard />} />
         <Route path="/admin/team-activities" element={<Dashboard />} />
         <Route path="/admin" element={<Navigate to="/admin/login" replace />} />

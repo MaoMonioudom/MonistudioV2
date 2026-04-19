@@ -18,6 +18,7 @@ export default function Contact() {
   });
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState('');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   useEffect(() => {
     const fetchBanners = async () => {
@@ -56,21 +57,34 @@ export default function Contact() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmDialog(false);
     setFormSubmitting(true);
     setFormMessage('');
 
     try {
-      console.log('Form submitted:', formData);
-      setFormMessage('Thank you! We\'ll get back to you soon.');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setFormMessage(''), 3000);
+      const response = await axios.post(`${API_URL}/contact-submissions`, formData);
+      
+      if (response.data.success) {
+        setFormMessage('Thank you! We\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setFormMessage(''), 8000);
+      }
     } catch (error) {
+      console.error('Error submitting form:', error);
       setFormMessage('An error occurred. Please try again.');
     } finally {
       setFormSubmitting(false);
     }
+  };
+
+  const handleCancelSubmit = () => {
+    setShowConfirmDialog(false);
   };
 
   return (
@@ -206,7 +220,10 @@ export default function Contact() {
                 <div>
                   <h3 className="text-white font-semibold text-lg mb-1">Address</h3>
                   <p className="text-gray-400 mb-3">
-                    áž•áŸ’áž›áž¼ážœáŸ£áŸ§áŸ¡ ážŸáž„áŸ’áž‚áž¶ážáŸ‹áž…áŸ„áž˜áž…áŸ…áž‘áž¸áŸ¡ ážážŽáŸ’ážŒáž–áŸ„áž’áž·áŸážŸáŸ‚áž“áž‡áŸáž™ ážšáž¶áž‡áž’áž¶áž“áž¸áž—áŸ’áž“áŸ†áž–áŸáž‰
+                    ផ្លូវ៣៧១ សង្គាត់បឹងទំពុន២ ខណ្ឌមានជ័យ រាជធានីភ្នំពេញ
+                  </p>
+                  <p className="text-gray-400 mb-3">
+                    Street 271, Sangkat Boeng Tumpun 2, Khan Meanchey, Phnom Penh
                   </p>
                   <a 
                     href="https://maps.app.goo.gl/4pwCS1sz1dweLWXt6" 
@@ -214,7 +231,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-white hover:text-gray-300 transition font-semibold"
                   >
-                    View on Google Maps â†’
+                    View on Google Map
                   </a>
                 </div>
               </div>
@@ -235,7 +252,7 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleFormChange}
-                    placeholder="John Doe"
+                    placeholder="Phka Chan"
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition"
                   />
@@ -252,7 +269,7 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleFormChange}
-                    placeholder="john@example.com"
+                    placeholder="phkachan@email.com"
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition"
                   />
@@ -301,6 +318,44 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-md w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-white mb-3">Confirm Message</h3>
+            <p className="text-gray-400 mb-6">
+              Are you sure you want to send this message? Please review it once before submitting.
+            </p>
+            
+            {/* Message Preview */}
+            <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 mb-6">
+              <p className="text-gray-300 text-sm"><span className="font-semibold text-white">From:</span> {formData.name}</p>
+              <p className="text-gray-300 text-sm mb-2"><span className="font-semibold text-white">Email:</span> {formData.email}</p>
+              <p className="text-gray-300 text-sm break-words"><span className="font-semibold text-white">Message:</span></p>
+              <p className="text-gray-400 text-sm mt-2 whitespace-pre-wrap">{formData.message}</p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelSubmit}
+                className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmSubmit}
+                disabled={formSubmitting}
+                className="flex-1 px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <FiSend size={16} />
+                Send Message
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

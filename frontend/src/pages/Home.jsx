@@ -3,7 +3,7 @@ import Hero from "../components/Hero"
 import Gallery from "../components/Gallery"
 import Service from "../components/Service"
 import TrustedBy from "../components/TrustedBy"
-import HomeContact from "../components/HomeContact"
+import InTouchMessage from "../components/InTouchMessage"
 // import Contact from "../components/Contact"
 import Footer from "../components/Footer"
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
         <TrustedBy />
         <Gallery />
         <Service />
-        <HomeContact />
+        <InTouchMessage />
         <Footer />
     </div>
   )

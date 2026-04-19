@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import Nav from "../components/Nav.jsx"
+import InTouchMessage from "../components/InTouchMessage.jsx"
 import Footer from "../components/Footer.jsx"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -126,6 +127,7 @@ export default function Service() {
           </>
         )}
       </section>
+        <InTouchMessage />
       <Footer />
     </>
   )

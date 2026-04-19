@@ -25,6 +25,7 @@ app.use('/api/team-activities', require('./routes/teamActivityRoutes'));
 app.use('/api/team-members', require('./routes/teamMemberRoutes'));
 app.use('/api/partners', require('./routes/partnerRoutes'));
 app.use('/api/contact-banners', require('./routes/contactBannerRoutes'));
+app.use('/api/contact-submissions', require('./routes/contactSubmissionRoutes'));
 // app.use('/api/users', require('./routes/userRoutes')); // User auth removed
 app.get('/', (req, res) => {
   res.send('API is running...');

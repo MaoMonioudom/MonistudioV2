@@ -14,6 +14,10 @@ const serviceSchema = mongoose.Schema(
       type: String,
       // Optional
     },
+    showOnHome: {
+      type: Boolean,
+      default: false, // Admin must explicitly select which services to show
+    },
   },
   {
     timestamps: true,
