@@ -9,7 +9,7 @@ export default function About() {
           <img
             src={studioImage}
             alt="Studio"
-            className="rounded-lg object-cover w-full h-80 md:h-full"
+            className="rounded-lg object-cover w-full md:h-full"
           />
         </div>
 

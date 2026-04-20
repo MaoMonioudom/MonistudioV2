@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
-import studioImage from "../assets/heroImg.jpg";
+import studioImage from "../assets/logo.png";
 import InTouchMessage from "../components/InTouchMessage.jsx";
 import teamImage from "../assets/temp.webp";
 
@@ -69,7 +69,7 @@ export default function About() {
             <img
               src={studioImage}
               alt="Studio"
-              className="w-full h-96 object-cover"
+              className="w-full h-auto md:h-96 object-contain md:object-cover"
             />
           </div>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import heroImg from "../assets/heroImg.jpg"; // Fallback image
+import heroImg from "../assets/hero.webp"; // Fallback image
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
