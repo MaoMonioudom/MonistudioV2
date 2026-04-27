@@ -70,6 +70,8 @@ export default function Service() {
                     <img
                       src={service.imageUrl}
                       alt={service.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
                     />
                   </div>

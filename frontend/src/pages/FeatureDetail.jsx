@@ -72,6 +72,9 @@ const FeatureDetail = () => {
                             <img 
                                 src={feature.imageUrl} 
                                 alt={feature.title} 
+                                loading="eager"
+                                decoding="async"
+                                fetchPriority="high"
                                 className="w-full h-auto rounded-xl shadow-lg object-cover cursor-pointer hover:opacity-90 transition"
                                 onClick={() => setSelectedImage(feature.imageUrl)}
                             />
@@ -120,6 +123,8 @@ const FeatureDetail = () => {
                                     <img 
                                         src={img} 
                                         alt={`${feature.title} gallery ${index + 1}`} 
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-auto object-contain group-hover:scale-105 transition duration-500"
                                     />
                                 </div>
@@ -144,6 +149,8 @@ const FeatureDetail = () => {
                                         <img
                                             src={work.imageUrl}
                                             alt={work.title}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
                                         />
                                         {/* Category Badge */}
@@ -188,6 +195,8 @@ const FeatureDetail = () => {
                         <img 
                             src={selectedImage} 
                             alt="Full view" 
+                            loading="eager"
+                            decoding="async"
                             className="w-auto h-full max-h-[90vh] object-contain rounded-lg"
                         />
                         <button

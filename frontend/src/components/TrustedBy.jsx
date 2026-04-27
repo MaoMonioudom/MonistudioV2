@@ -83,6 +83,7 @@ export default function TrustedBy() {
                   alt={partner.name}
                   className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
                   loading="lazy"
+                  decoding="async"
                 />
               </a>
             ))}
@@ -108,6 +109,7 @@ export default function TrustedBy() {
                   alt={partner.name}
                   className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
                   loading="lazy"
+                  decoding="async"
                 />
               </a>
             ))}

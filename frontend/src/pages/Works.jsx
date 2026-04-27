@@ -99,6 +99,8 @@ export default function Works() {
                   <img
                     src={work.imageUrl}
                     alt={work.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
                   />
                   {/* Category Badge */}

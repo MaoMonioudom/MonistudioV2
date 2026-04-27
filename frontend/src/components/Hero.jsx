@@ -95,6 +95,9 @@ export default function Hero() {
           <img
             src={banner.imageUrl}
             alt={banner.title}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={index === 0 ? "high" : "auto"}
             className="absolute inset-0 w-full h-full object-cover"
           />
 

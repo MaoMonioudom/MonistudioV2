@@ -99,7 +99,14 @@ export default function Contact() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
             </div>
           ) : banners.length === 0 ? (
-            <img src={contactImage} alt="Contact" className="w-full h-96 object-cover" />
+            <img
+              src={contactImage}
+              alt="Contact"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              className="w-full h-96 object-cover"
+            />
           ) : (
             <>
               <div className="relative h-96 overflow-hidden">
@@ -113,6 +120,9 @@ export default function Contact() {
                     <img
                       src={banner.imageUrl}
                       alt={banner.title}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
                       onClick={() => handleImageClick(banner.link)}
                       className={`w-full h-full object-cover ${
                         banner.link ? 'cursor-pointer hover:scale-105 transition-transform duration-500' : ''

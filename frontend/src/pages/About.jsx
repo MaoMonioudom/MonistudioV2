@@ -69,6 +69,8 @@ export default function About() {
             <img
               src={studioImage}
               alt="Studio"
+              loading="lazy"
+              decoding="async"
               className="w-full h-auto md:h-96 object-contain md:object-cover"
             />
           </div>
@@ -139,6 +141,8 @@ export default function About() {
               <img
                 src={member.imageUrl || teamImage}
                 alt={member.name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition duration-500"
               />
             </div>
@@ -178,6 +182,8 @@ export default function About() {
           <img
             src={activity.imageUrl || teamImage}
             alt={activity.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-64 object-cover group-hover:scale-105 transition duration-500"
           />
           <div className="p-4">

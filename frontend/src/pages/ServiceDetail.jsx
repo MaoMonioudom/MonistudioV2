@@ -72,6 +72,9 @@ const ServiceDetail = () => {
               <img
                 src={service.imageUrl}
                 alt={service.title}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
                 className="w-full h-auto rounded-xl shadow-lg object-cover"
               />
             ) : (
@@ -110,6 +113,8 @@ const ServiceDetail = () => {
                       <img
                         src={feature.imageUrl}
                         alt={feature.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-48 object-cover group-hover:scale-105 transition duration-500"
                       />
                     </div>
