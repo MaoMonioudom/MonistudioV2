@@ -17,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/service" element={<Service />} />
         <Route path="/service/:id" element={<ServiceDetail />} />
@@ -39,7 +39,7 @@ function App() {
         <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
 
         {/* Fallback: redirect unknown paths to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </BrowserRouter>
   )
