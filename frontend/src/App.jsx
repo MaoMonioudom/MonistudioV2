@@ -10,8 +10,6 @@ import ServiceDetail from "./pages/ServiceDetail"
 // Admin imports
 import Login from "./admins/Login"
 import Dashboard from "./admins/Dashboard"
-import AdminServices from "./admins/Services"
-import AdminFeatures from "./admins/Features"
 
 function App() {
   return (
