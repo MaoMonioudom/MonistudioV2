@@ -19,19 +19,19 @@ const FeatureDetail = () => {
             try {
                 const response = await axios.get(`${API_URL}/features/${id}`);
                 setFeature(response.data);
-                
-                // Fetch all features to find related works
-                const allFeaturesResponse = await axios.get(`${API_URL}/features`);
-                const allFeatures = allFeaturesResponse.data;
-                
-                // Filter related works by same service (excluding current feature)
-                // Sort by title alphabetically for consistent ordering
-                const related = allFeatures
-                    .filter(f => f.serviceId?._id === response.data.serviceId?._id && f._id !== id)
-                    .sort((a, b) => a.title.localeCompare(b.title))
-                    .slice(0, 3); // Show only 3 related works
-                
-                setRelatedWorks(related);
+
+                if (response.data.serviceId?._id) {
+                    const relatedResponse = await axios.get(`${API_URL}/features`, {
+                        params: {
+                            serviceId: response.data.serviceId._id,
+                            excludeId: id,
+                            sort: "title",
+                            limit: 3,
+                        },
+                    });
+                    setRelatedWorks(relatedResponse.data.features);
+                }
+
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching feature details:", error);
@@ -60,18 +60,19 @@ const FeatureDetail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a]">
+        <div className="relative isolate overflow-hidden min-h-screen bg-[#0a0a0a]">
+            <div className="absolute -z-10 top-0 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
             <Nav />
             <div className="pt-24 pb-12 px-4 max-w-6xl mx-auto">
                 <Link to="/" className="text-gray-400 hover:text-white mb-6 inline-block transition">&larr; Back to Home</Link>
-                
+
                 <div className="grid md:grid-cols-2 gap-10 mt-6">
                     {/* Main Image */}
                     <div>
                         {feature.imageUrl ? (
-                            <img 
-                                src={feature.imageUrl} 
-                                alt={feature.title} 
+                            <img
+                                src={feature.imageUrl}
+                                alt={feature.title}
                                 loading="eager"
                                 decoding="async"
                                 fetchPriority="high"
@@ -89,7 +90,7 @@ const FeatureDetail = () => {
                     <div>
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{feature.title}</h1>
                         {feature.serviceId && (
-                            <Link 
+                            <Link
                                 to={`/service/${feature.serviceId._id}`}
                                 className="inline-block bg-blue-600/20 text-blue-400 text-sm px-3 py-1 rounded-full mb-4 hover:bg-blue-600/30 transition"
                             >
@@ -99,7 +100,7 @@ const FeatureDetail = () => {
                         <p className="text-gray-300 text-lg leading-relaxed mb-6">
                             {feature.description}
                         </p>
-                        
+
                         {feature.detailDescription && (
                             <div className="text-gray-400">
                                 <h3 className="text-xl font-semibold text-white mb-2">More Details</h3>
@@ -115,14 +116,14 @@ const FeatureDetail = () => {
                         <h2 className="text-2xl font-bold text-white mb-8">Gallery</h2>
                         <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
                             {feature.moreImages.map((img, index) => (
-                                <div 
-                                    key={index} 
+                                <div
+                                    key={index}
                                     className="mb-6 break-inside-avoid rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition cursor-pointer group"
                                     onClick={() => setSelectedImage(img)}
                                 >
-                                    <img 
-                                        src={img} 
-                                        alt={`${feature.title} gallery ${index + 1}`} 
+                                    <img
+                                        src={img}
+                                        alt={`${feature.title} gallery ${index + 1}`}
                                         loading="lazy"
                                         decoding="async"
                                         className="w-full h-auto object-contain group-hover:scale-105 transition duration-500"
@@ -139,9 +140,9 @@ const FeatureDetail = () => {
                         <h2 className="text-2xl font-bold text-white mb-8">Related Works</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-10 mb-8">
                             {relatedWorks.slice(0, 3).map((work) => (
-                                <Link 
-                                    to={`/feature/${work._id}`} 
-                                    key={work._id} 
+                                <Link
+                                    to={`/feature/${work._id}`}
+                                    key={work._id}
                                     className="group cursor-pointer block"
                                 >
                                     {/* Image */}
@@ -160,7 +161,7 @@ const FeatureDetail = () => {
                                             </div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Content */}
                                     <div className="mt-4">
                                         <h3 className="text-white text-xl font-bold group-hover:text-gray-300 transition">
@@ -174,7 +175,7 @@ const FeatureDetail = () => {
                             ))}
                         </div>
                         <div className="text-center">
-                            <Link 
+                            <Link
                                 to="/portfolio"
                                 className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-gray-200 transition"
                             >
@@ -187,14 +188,14 @@ const FeatureDetail = () => {
 
             {/* Lightbox Modal */}
             {selectedImage && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
                     onClick={() => setSelectedImage(null)}
                 >
                     <div className="relative max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
-                        <img 
-                            src={selectedImage} 
-                            alt="Full view" 
+                        <img
+                            src={selectedImage}
+                            alt="Full view"
                             loading="eager"
                             decoding="async"
                             className="w-auto h-full max-h-[90vh] object-contain rounded-lg"

@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
+import SmokeWisp from "./SmokeWisp"
+import ServiceCard from "./ServiceCard"
+import useInView from "../hooks/useInView"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function Services() {
+  const [ref, inView] = useInView()
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!inView) return
     const fetchServices = async () => {
       try {
         const response = await axios.get(`${API_URL}/services`)
@@ -21,13 +26,17 @@ export default function Services() {
     }
 
     fetchServices()
-  }, [])
+  }, [inView])
 
   return (
-    <section className="py-20 px-6 bg-[#0a0a0a]">
+    <section ref={ref} className={`relative isolate overflow-hidden py-20 px-6 bg-[#0a0a0a] reveal ${inView ? "in-view" : ""}`}>
+      <SmokeWisp flip rotate={-15} className="absolute -z-10 top-[3%] left-[12%] w-[100px] h-[92%] pointer-events-none" />
+      <SmokeWisp rotate={14} className="absolute -z-10 bottom-6 right-[10%] w-[70px] h-[160px] pointer-events-none" />
+      <SmokeWisp color="#f8f8f8" rotate={-9} className="absolute -z-10 bottom-10 left-[35%] w-[60px] h-[140px] pointer-events-none" />
       {/* Section Title */}
       <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-white">
+        <div className="w-12 h-1 bg-brand-green rounded-full mx-auto mb-4"></div>
+        <h2 className="text-3xl md:text-4xl font-bold text-white hover:text-brand-green transition-colors duration-300 inline-block cursor-default">
           Our Services
         </h2>
         <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
@@ -44,74 +53,29 @@ export default function Services() {
         <>
           {/* Mobile horizontal scroll, Desktop grid */}
           <div className="flex sm:hidden overflow-x-auto gap-6 pb-4 -mx-6 px-6">
-            {services.filter(service => service.showOnHome).slice(0, 6).map((service) => (
-              <Link
-                to={`/service/${service._id}`}
+            {services.filter(service => service.showOnHome).slice(0, 6).map((service, index) => (
+              <ServiceCard
                 key={service._id}
-                className="group bg-black/40 border border-white/10 rounded-xl overflow-hidden hover:border-white/30 transition cursor-pointer flex-shrink-0 w-72"
-              >
-                {/* Image */}
-                {service.imageUrl && (
-                  <div className="overflow-hidden">
-                    <img
-                      src={service.imageUrl}
-                      alt={service.title}
-                      className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
-                    />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-white font-bold text-xl mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              </Link>
+                service={service}
+                delay={index * 0.1}
+                extraClassName="flex-shrink-0 w-72"
+              />
             ))}
           </div>
 
           {/* Desktop grid view */}
           <div className="hidden sm:block">
             <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-12">
-              {services.filter(service => service.showOnHome).slice(0, 6).map((service) => (
-                <Link
-                  to={`/service/${service._id}`}
-                  key={service._id}
-                  className="group bg-black/40 border border-white/10 rounded-xl overflow-hidden hover:border-white/30 transition cursor-pointer"
-                >
-                  {/* Image */}
-                  {service.imageUrl && (
-                    <div className="overflow-hidden">
-                      <img
-                        src={service.imageUrl}
-                        alt={service.title}
-                        className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
-                      />
-                    </div>
-                  )}
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <h3 className="text-white font-bold text-xl mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </Link>
+              {services.filter(service => service.showOnHome).slice(0, 6).map((service, index) => (
+                <ServiceCard key={service._id} service={service} delay={(index % 3) * 0.12} />
               ))}
             </div>
           </div>
           {/* </div> */}
           <div className="mt-12 text-center">
-            <Link 
+            <Link
               to="/service"
-              className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-gray-200 transition"
+              className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-brand-green hover:text-white transition-colors duration-300"
             >
               View All Services
             </Link>

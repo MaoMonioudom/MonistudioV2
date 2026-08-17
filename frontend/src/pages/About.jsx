@@ -52,7 +52,8 @@ export default function About() {
     <>
       <Nav />
 
-      <section className="bg-[#0a0a0a] pt-32 px-6">
+      <section className="relative isolate overflow-hidden bg-[#0a0a0a] pt-32 px-6">
+        <div className="absolute -z-10 -top-24 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
         {/* Page Title */}
         <div className="text-center mb-20">
           <h1 className="text-4xl md:text-5xl font-bold text-white">

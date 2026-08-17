@@ -28,7 +28,7 @@ export default function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-10 text-white font-bold uppercase tracking-wider text-sm">
           {menuItems.map((item) => (
-            <li key={item} className="hover:opacity-60 cursor-pointer">
+            <li key={item} className="hover:text-brand-green transition-colors duration-300 cursor-pointer">
               <Link to={menuLinks[item]}>{item}</Link>
             </li>
           ))}
@@ -55,10 +55,10 @@ export default function Nav() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden bg-black px-6 pb-6">
+        <div className="md:hidden bg-[#0a0a0a] px-6 pb-6">
           <ul className="flex flex-col gap-6 text-white font-bold uppercase tracking-wider text-sm">
             {menuItems.map((item) => (
-              <li key={item} className="hover:opacity-60 cursor-pointer">
+              <li key={item} className="hover:text-brand-green transition-colors duration-300 cursor-pointer">
                 <Link to={menuLinks[item]} onClick={() => setOpen(false)}>
                   {item}
                 </Link>

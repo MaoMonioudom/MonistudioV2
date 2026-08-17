@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
@@ -69,7 +69,7 @@ export default function Contact() {
 
     try {
       const response = await axios.post(`${API_URL}/contact-submissions`, formData);
-      
+
       if (response.data.success) {
         setFormMessage('Thank you! We\'ll get back to you soon.');
         setFormData({ name: '', email: '', message: '' });
@@ -92,7 +92,8 @@ export default function Contact() {
       <Nav />
 
       {/* Banner Section */}
-      <section className="bg-[#0a0a0a] pt-24 pb-12 px-6">
+      <section className="relative isolate overflow-hidden bg-[#0a0a0a] pt-24 pb-12 px-6">
+        <div className="absolute -z-10 -top-24 -left-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
         <div className="max-w-4xl w-full mx-auto overflow-hidden rounded-2xl mb-8 relative">
           {loading ? (
             <div className="w-full h-96 bg-gray-800 flex items-center justify-center">
@@ -186,7 +187,7 @@ export default function Contact() {
 
           {/* Two Column Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
+
             {/* Contact Information */}
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-white mb-8">Contact Information</h2>
@@ -235,9 +236,9 @@ export default function Contact() {
                   <p className="text-gray-400 mb-3">
                     Street 271, Sangkat Boeng Tumpun 2, Khan Meanchey, Phnom Penh
                   </p>
-                  <a 
-                    href="https://maps.app.goo.gl/4pwCS1sz1dweLWXt6" 
-                    target="_blank" 
+                  <a
+                    href="https://maps.app.goo.gl/4pwCS1sz1dweLWXt6"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-white hover:text-gray-300 transition font-semibold"
                   >
@@ -315,8 +316,8 @@ export default function Contact() {
                 {/* Form Message */}
                 {formMessage && (
                   <p className={`text-center text-sm py-2 rounded-lg ${
-                    formMessage.includes('error') 
-                      ? 'bg-red-500/20 text-red-400' 
+                    formMessage.includes('error')
+                      ? 'bg-red-500/20 text-red-400'
                       : 'bg-green-500/20 text-green-400'
                   }`}>
                     {formMessage}
@@ -337,7 +338,7 @@ export default function Contact() {
             <p className="text-gray-400 mb-6">
               Are you sure you want to send this message? Please review it once before submitting.
             </p>
-            
+
             {/* Message Preview */}
             <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 mb-6">
               <p className="text-gray-300 text-sm"><span className="font-semibold text-white">From:</span> {formData.name}</p>

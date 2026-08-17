@@ -10,16 +10,16 @@ export default function Footer() {
 
       {/* Social media icons */}
       <div className="flex justify-center gap-6 text-2xl">
-        <a href="https://www.facebook.com/profile.php?id=61572323304102" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+        <a href="https://www.facebook.com/profile.php?id=61572323304102" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-brand-green transition-colors duration-300">
           <FaFacebook />
         </a>
-        <a href="https://www.instagram.com/moni.img/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+        <a href="https://www.instagram.com/moni.img/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-brand-green transition-colors duration-300">
           <FaInstagram />
         </a>
-        <a href="https://www.tiktok.com/@moniimagestudio" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+        <a href="https://www.tiktok.com/@moniimagestudio" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-gray-400 hover:text-brand-green transition-colors duration-300">
           <FaTiktok />
         </a>
-        <a href="https://www.linkedin.com/company/moni-image-studio/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+        <a href="https://www.linkedin.com/company/moni-image-studio/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-brand-green transition-colors duration-300">
           <FaLinkedin />
         </a>
       </div>

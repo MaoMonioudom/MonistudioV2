@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import heroImg from "../assets/hero.webp"; // Fallback image
+import SmokeWisp from "./SmokeWisp";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -66,12 +67,13 @@ export default function Hero() {
     imageUrl: heroImg,
   };
 
-  const displayBanners = banners.length > 0 ? banners : [fallbackBanner];
+  const hasBanners = banners.length > 0;
+  const displayBanners = hasBanners ? banners : [fallbackBanner];
   const currentBanner = displayBanners[currentIndex] || fallbackBanner;
 
   if (loading) {
     return (
-      <section className="relative h-[50vh] md:h-screen w-full bg-gray-900 flex items-center justify-center">
+      <section className="relative h-[50vh] md:h-screen w-full bg-[#0a0a0a] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </section>
     );
@@ -79,7 +81,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative h-[50vh] md:h-screen w-full overflow-hidden"
+      className="relative isolate h-[50vh] md:h-screen w-full overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -91,18 +93,29 @@ export default function Hero() {
             index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          {/* Background Image */}
-          <img
-            src={banner.imageUrl}
-            alt={banner.title}
-            loading={index === 0 ? "eager" : "lazy"}
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "auto"}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          {hasBanners ? (
+            <>
+              {/* Background Image */}
+              <img
+                src={banner.imageUrl}
+                alt={banner.title}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                fetchPriority={index === 0 ? "high" : "auto"}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
 
-          {/* Dark Overlay */}
-          <div className="absolute inset-0"></div>
+              {/* Dark Overlay */}
+              <div className="absolute inset-0"></div>
+            </>
+          ) : (
+            <>
+              {/* No active banner: pure background style, no image */}
+              <div className="absolute inset-0 bg-[#0a0a0a]"></div>
+              <SmokeWisp rotate={-15} className="absolute -z-10 bottom-8 left-[8%] w-[190px] h-[360px] pointer-events-none" />
+              <SmokeWisp flip rotate={20} className="absolute -z-10 top-8 right-[10%] w-[170px] h-[320px] pointer-events-none" />
+            </>
+          )}
 
           {/* Content */}
           <div className="relative z-10 flex flex-col items-start justify-end h-full text-start px-4 max-w-4xl">
@@ -126,14 +139,14 @@ export default function Hero() {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-brand-green/80 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300"
             aria-label="Previous slide"
           >
             <FiChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-brand-green/80 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300"
             aria-label="Next slide"
           >
             <FiChevronRight size={24} />
@@ -150,7 +163,7 @@ export default function Hero() {
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? "bg-white w-8"
+                  ? "bg-brand-green w-8"
                   : "bg-white/50 hover:bg-white/75"
               }`}
               aria-label={`Go to slide ${index + 1}`}

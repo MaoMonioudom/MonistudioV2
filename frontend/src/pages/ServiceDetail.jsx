@@ -17,14 +17,10 @@ const ServiceDetail = () => {
       try {
         const [serviceRes, featuresRes] = await Promise.all([
           axios.get(`${API_URL}/services/${id}`),
-          axios.get(`${API_URL}/features`)
+          axios.get(`${API_URL}/features`, { params: { serviceId: id } })
         ]);
         setService(serviceRes.data);
-        // Filter features that belong to this service
-        const relatedFeatures = featuresRes.data.filter(
-          (f) => f.serviceId?._id === id || f.serviceId === id
-        );
-        setFeatures(relatedFeatures);
+        setFeatures(featuresRes.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching service details:", error);
@@ -55,7 +51,8 @@ const ServiceDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="relative isolate overflow-hidden min-h-screen bg-[#0a0a0a]">
+      <div className="absolute -z-10 top-0 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
       <Nav />
       <div className="pt-24 pb-12 px-4 max-w-6xl mx-auto">
         <Link

@@ -6,7 +6,38 @@ const { deleteImage } = require('../config/cloudinary');
 // @access  Public
 const getFeatures = async (req, res) => {
   try {
-    const features = await Feature.find().populate('serviceId', 'title');
+    const { page, limit, serviceId, showOnHome, excludeId, sort } = req.query;
+
+    const filter = {};
+    if (serviceId) filter.serviceId = serviceId;
+    if (showOnHome !== undefined) filter.showOnHome = showOnHome === 'true';
+    if (excludeId) filter._id = { $ne: excludeId };
+
+    const sortOption = sort === 'title' ? { title: 1 } : { createdAt: -1 };
+
+    // Paginated mode: only when the caller opts in via page/limit.
+    if (page || limit) {
+      const pageNum = Math.max(parseInt(page, 10) || 1, 1);
+      const limitNum = Math.max(parseInt(limit, 10) || 12, 1);
+
+      const [features, total] = await Promise.all([
+        Feature.find(filter)
+          .populate('serviceId', 'title')
+          .sort(sortOption)
+          .skip((pageNum - 1) * limitNum)
+          .limit(limitNum),
+        Feature.countDocuments(filter),
+      ]);
+
+      return res.status(200).json({
+        features,
+        total,
+        page: pageNum,
+        totalPages: Math.ceil(total / limitNum),
+      });
+    }
+
+    const features = await Feature.find(filter).populate('serviceId', 'title').sort(sortOption);
     res.status(200).json(features);
   } catch (error) {
     res.status(500).json({ message: error.message });

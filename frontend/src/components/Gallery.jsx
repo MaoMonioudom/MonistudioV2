@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
+import SmokeWisp from "./SmokeWisp"
+import FeatureCard from "./FeatureCard"
+import useInView from "../hooks/useInView"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function Gallery() {
+  const [ref, inView] = useInView()
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!inView) return
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${API_URL}/features`)
-        setProjects(response.data)
+        const response = await axios.get(`${API_URL}/features`, {
+          params: { showOnHome: true, limit: 6 },
+        })
+        setProjects(response.data.features)
         setLoading(false)
       } catch (error) {
         console.error("Error fetching projects:", error)
@@ -21,12 +28,16 @@ export default function Gallery() {
     }
 
     fetchProjects()
-  }, [])
+  }, [inView])
 
   return (
-    <section className="py-16 bg-[#0a0a0a] px-6">
+    <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-[#0a0a0a] px-6 reveal ${inView ? "in-view" : ""}`}>
+      <SmokeWisp rotate={-10} className="absolute -z-10 top-[3%] right-[15%] w-[100px] h-[92%] pointer-events-none" />
+      <SmokeWisp flip rotate={18} className="absolute -z-10 bottom-4 left-[4%] w-[70px] h-[160px] pointer-events-none" />
+      <SmokeWisp color="#f8f8f8" flip rotate={-8} className="absolute -z-10 bottom-8 right-[25%] w-[60px] h-[140px] pointer-events-none" />
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-white mb-12">Featured Works</h2>
+        <div className="w-12 h-1 bg-brand-green rounded-full mb-4"></div>
+        <h2 className="text-3xl font-bold text-white mb-12 hover:text-brand-green transition-colors duration-300 inline-block cursor-default">Featured Works</h2>
 
         {loading ? (
           <div className="text-white text-center">Loading...</div>
@@ -35,46 +46,14 @@ export default function Gallery() {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {projects.filter(project => project.showOnHome).slice(0, 6).map((project) => (
-              <Link 
-                to={`/feature/${project._id}`} 
-                key={project._id} 
-                className="group cursor-pointer block"
-              >
-                {/* Image */}
-                <div className="overflow-hidden rounded-lg relative">
-                  <img
-                    src={project.imageUrl}
-                    alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  {/* Category Badge */}
-                  {project.serviceId && (
-                    <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                        {project.serviceId.title}
-                    </div>
-                  )}
-                </div>
-                
-                {/* Content */}
-                <div className="mt-4">
-                  <h3 className="text-white text-xl font-bold group-hover:text-gray-300 transition">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-400 mt-1 line-clamp-2">
-                    {project.description}
-                  </p>
-                </div>
-
-              </Link>
-            ))}
+              {projects.map((project, index) => (
+                <FeatureCard key={project._id} project={project} delay={(index % 3) * 0.12} />
+              ))}
             </div>
             <div className="mt-12 text-center">
-              <Link 
+              <Link
                 to="/portfolio"
-                className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-gray-200 transition"
+                className="inline-block bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-brand-green hover:text-white transition-colors duration-300"
               >
                 View More Works
               </Link>
