@@ -51,10 +51,12 @@ export default function MarqueeRow({ items, speed = 40, direction = 1, renderIte
       className={`trusted-by-scroll flex items-center gap-5 md:gap-8 px-4 md:px-6 overflow-x-auto ${className}`}
       onTouchStart={pause}
       onTouchEnd={resumeAfterDelay}
+      onTouchCancel={resumeAfterDelay}
       onPointerDown={pause}
       onPointerUp={resumeAfterDelay}
+      onPointerCancel={resumeAfterDelay}
     >
-      {items.map(renderItem)}
+      {items.map((item, index) => renderItem(item, index, trackRef))}
     </div>
   )
 }

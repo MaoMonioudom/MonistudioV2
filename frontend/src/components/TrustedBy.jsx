@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import SmokeWisp from "./SmokeWisp"
 import MarqueeRow from "./MarqueeRow"
+import LazyImg from "./LazyImg"
 import useInView from "../hooks/useInView"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
@@ -77,7 +78,7 @@ export default function TrustedBy() {
                 items={firstMarqueePartners}
                 speed={45}
                 direction={1}
-                renderItem={(partner, index) => (
+                renderItem={(partner, index, containerRef) => (
                   <a
                     key={`row1-${partner._id}-${index}`}
                     href={partner.website || '#'}
@@ -89,12 +90,11 @@ export default function TrustedBy() {
                     onClick={(e) => !partner.website && e.preventDefault()}
                     aria-label={partner.name}
                   >
-                    <img
+                    <LazyImg
                       src={partner.logoUrl}
                       alt={partner.name}
+                      containerRef={containerRef}
                       className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
-                      loading="lazy"
-                      decoding="async"
                     />
                   </a>
                 )}
@@ -106,7 +106,7 @@ export default function TrustedBy() {
                 items={secondMarqueePartners}
                 speed={38}
                 direction={-1}
-                renderItem={(partner, index) => (
+                renderItem={(partner, index, containerRef) => (
                   <a
                     key={`row2-${partner._id}-${index}`}
                     href={partner.website || '#'}
@@ -118,12 +118,11 @@ export default function TrustedBy() {
                     onClick={(e) => !partner.website && e.preventDefault()}
                     aria-label={partner.name}
                   >
-                    <img
+                    <LazyImg
                       src={partner.logoUrl}
                       alt={partner.name}
+                      containerRef={containerRef}
                       className="max-h-10 md:max-h-12 w-auto object-contain opacity-100"
-                      loading="lazy"
-                      decoding="async"
                     />
                   </a>
                 )}

@@ -74,8 +74,10 @@ export default function TestimonialMarquee({ testimonials, speed = 30 }) {
       className="trusted-by-scroll flex items-center gap-8 overflow-x-auto px-6 md:px-16 py-6"
       onTouchStart={pause}
       onTouchEnd={resumeAfterDelay}
+      onTouchCancel={resumeAfterDelay}
       onPointerDown={pause}
       onPointerUp={resumeAfterDelay}
+      onPointerCancel={resumeAfterDelay}
     >
       {loopedItems.map((testimonial, index) => (
         <div
