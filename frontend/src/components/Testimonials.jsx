@@ -1,25 +1,43 @@
 import SmokeWisp from "./SmokeWisp"
-import TestimonialCard from "./TestimonialCard"
+import TestimonialMarquee from "./TestimonialMarquee"
 import useInView from "../hooks/useInView"
 
 const testimonials = [
   {
     name: "Ms. Noah Sy",
-    role: "Place Holder",
+    role: "Founder Of Mode Clothing",
     quote:
       "What an amazing studio, with amazing sweet talented team, professional photographer and very convenient location. Very highly recommended for any occasion.",
   },
   {
     name: "Mr. Sovannaroth Ing",
-    role: "Place Holder",
+    role: "Founder Of Borey Bokor Birdnest",
     quote:
       "I used to on my Facebook page seeking for a freelance to take photos of my birdnest products. Then I got to know him. Have worked with him twice. Love his work.",
   },
   {
     name: "Alex Entertainment",
-    role: "Place Holder",
+    role: "Founder of AEA Entertianment Agency",
     quote:
       " Love working with Moni Image Studio! They understand the vision, bring great creativity, and make every project look amazing. Happy to have the team on most of the wedding project with us. We are now long term partner.",
+  },
+  {
+    name: "Sydney Marith",
+    role: "Miss Planet International / Founder of AIRES",
+    quote:
+      "Moni and his team are incredibly talented and professional!! An amazing team, great photos, and the best experience.",
+  },
+  {
+    name: "Mr. Tim Sovannara",
+    role: "Co-Founder Oli6 Cambodia / BTNature Cambodia",
+    quote:
+      "I went to studio and it’s good place calm environment and the photographer is good technique for shooting!",
+  },
+  {
+    name: "Mr. Hao Taing",
+    role: "Founder of Local4Local",
+    quote:
+      "Great studio and beautiful photos",
   },
 ]
 
@@ -41,11 +59,7 @@ export default function Testimonials() {
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {testimonials.map((testimonial, index) => (
-          <TestimonialCard key={testimonial.name} testimonial={testimonial} delay={index * 0.12} />
-        ))}
-      </div>
+      <TestimonialMarquee testimonials={testimonials} />
     </section>
   )
 }

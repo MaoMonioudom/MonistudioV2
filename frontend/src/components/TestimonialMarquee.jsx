@@ -1,0 +1,101 @@
+import { useEffect, useRef } from "react"
+
+export default function TestimonialMarquee({ testimonials, speed = 30 }) {
+  const trackRef = useRef(null)
+  const pausedRef = useRef(false)
+  const resumeTimeoutRef = useRef(null)
+  const itemRefs = useRef([])
+
+  const loopedItems = [...testimonials, ...testimonials, ...testimonials]
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    const third = track.scrollWidth / 3
+    track.scrollLeft = third
+
+    let last = performance.now()
+    let frame = requestAnimationFrame(function step(now) {
+      const dt = (now - last) / 1000
+      last = now
+
+      if (!pausedRef.current) {
+        const third = track.scrollWidth / 3
+        track.scrollLeft += speed * dt
+        if (track.scrollLeft >= third * 2) {
+          track.scrollLeft -= third
+        } else if (track.scrollLeft <= 0) {
+          track.scrollLeft += third
+        }
+      }
+
+      const containerRect = track.getBoundingClientRect()
+      const centerX = containerRect.left + containerRect.width / 2
+      const half = containerRect.width / 2
+
+      const positions = itemRefs.current.map((el) => {
+        if (!el) return null
+        const r = el.getBoundingClientRect()
+        return r.left + r.width / 2
+      })
+
+      positions.forEach((cx, i) => {
+        const el = itemRefs.current[i]
+        if (!el || cx == null) return
+        const norm = Math.min(Math.abs(cx - centerX) / half, 1)
+        const scale = 1.15 - norm * 0.3
+        const opacity = 1 - norm * 0.35
+        el.style.transform = `scale(${scale.toFixed(3)})`
+        el.style.opacity = opacity.toFixed(3)
+      })
+
+      frame = requestAnimationFrame(step)
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [speed])
+
+  const pause = () => {
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
+    pausedRef.current = true
+  }
+
+  const resumeAfterDelay = () => {
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false
+    }, 1200)
+  }
+
+  return (
+    <div
+      ref={trackRef}
+      className="trusted-by-scroll flex items-center gap-8 overflow-x-auto px-6 md:px-16 py-6"
+      onTouchStart={pause}
+      onTouchEnd={resumeAfterDelay}
+      onPointerDown={pause}
+      onPointerUp={resumeAfterDelay}
+    >
+      {loopedItems.map((testimonial, index) => (
+        <div
+          key={`${testimonial.name}-${index}`}
+          ref={(el) => { itemRefs.current[index] = el }}
+          className="flex-shrink-0 w-[240px] md:w-[300px] h-[340px] md:h-[380px]"
+        >
+          <div className="relative overflow-hidden bg-black/40 border border-white/10 rounded-xl p-8 hover:border-brand-green/50 transition-colors duration-300 h-full flex flex-col">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-brand-green via-white/40 to-transparent"></div>
+            <p className="text-brand-green text-3xl font-serif leading-none mb-3">&ldquo;</p>
+            <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-7 flex-1">
+              {testimonial.quote}
+            </p>
+            <div>
+              <p className="text-white font-bold">{testimonial.name}</p>
+              <p className="text-gray-500 text-sm">{testimonial.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}

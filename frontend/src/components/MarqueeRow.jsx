@@ -49,8 +49,6 @@ export default function MarqueeRow({ items, speed = 40, direction = 1, renderIte
     <div
       ref={trackRef}
       className={`trusted-by-scroll flex items-center gap-5 md:gap-8 px-4 md:px-6 overflow-x-auto ${className}`}
-      onMouseEnter={pause}
-      onMouseLeave={() => { pausedRef.current = false }}
       onTouchStart={pause}
       onTouchEnd={resumeAfterDelay}
       onPointerDown={pause}
