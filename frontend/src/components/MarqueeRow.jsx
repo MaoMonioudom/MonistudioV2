@@ -2,15 +2,18 @@ import { useEffect, useRef } from "react"
 
 export default function MarqueeRow({ items, speed = 40, direction = 1, renderItem, className = "" }) {
   const trackRef = useRef(null)
+  const containerRef = useRef(null)
   const pausedRef = useRef(false)
   const resumeTimeoutRef = useRef(null)
+  const posRef = useRef(0)
 
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
 
     const halfWidth = track.scrollWidth / 2
-    track.scrollLeft = direction > 0 ? 0 : halfWidth
+    posRef.current = direction > 0 ? 0 : -halfWidth
+    track.style.transform = `translate3d(${posRef.current}px, 0, 0)`
 
     let last = performance.now()
     let frame = requestAnimationFrame(function step(now) {
@@ -19,12 +22,13 @@ export default function MarqueeRow({ items, speed = 40, direction = 1, renderIte
 
       if (!pausedRef.current) {
         const half = track.scrollWidth / 2
-        track.scrollLeft += direction * speed * dt
-        if (track.scrollLeft >= half) {
-          track.scrollLeft -= half
-        } else if (track.scrollLeft <= 0) {
-          track.scrollLeft += half
+        posRef.current -= direction * speed * dt
+        if (posRef.current <= -half) {
+          posRef.current += half
+        } else if (posRef.current > 0) {
+          posRef.current -= half
         }
+        track.style.transform = `translate3d(${posRef.current}px, 0, 0)`
       }
 
       frame = requestAnimationFrame(step)
@@ -47,8 +51,8 @@ export default function MarqueeRow({ items, speed = 40, direction = 1, renderIte
 
   return (
     <div
-      ref={trackRef}
-      className={`trusted-by-scroll flex items-center gap-5 md:gap-8 px-4 md:px-6 overflow-x-auto ${className}`}
+      ref={containerRef}
+      className={`trusted-by-scroll overflow-hidden ${className}`}
       onTouchStart={pause}
       onTouchEnd={resumeAfterDelay}
       onTouchCancel={resumeAfterDelay}
@@ -56,7 +60,9 @@ export default function MarqueeRow({ items, speed = 40, direction = 1, renderIte
       onPointerUp={resumeAfterDelay}
       onPointerCancel={resumeAfterDelay}
     >
-      {items.map((item, index) => renderItem(item, index, trackRef))}
+      <div ref={trackRef} className="flex items-center gap-5 md:gap-8 px-4 md:px-6 w-max will-change-transform">
+        {items.map((item, index) => renderItem(item, index, containerRef))}
+      </div>
     </div>
   )
 }
