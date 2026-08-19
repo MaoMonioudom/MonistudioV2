@@ -80,10 +80,12 @@ body.custom-cursor-active * {
   background: #0a0a0a;
 }
 
-/* Marquee row: clipping viewport, inner track animated via transform in JS */
+/* Marquee row: real scroll container, auto-advanced via JS, still scrollable by hand */
 .trusted-by-scroll {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto;
 }
 
 .trusted-by-scroll::-webkit-scrollbar {

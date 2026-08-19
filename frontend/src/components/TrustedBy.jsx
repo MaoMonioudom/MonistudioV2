@@ -43,8 +43,8 @@ export default function TrustedBy() {
         ? [...partners.slice(1), partners[0]]
         : partners
 
-  const firstMarqueePartners = [...firstRowSource, ...firstRowSource]
-  const secondMarqueePartners = [...secondRowSource, ...secondRowSource]
+  const firstMarqueePartners = [...firstRowSource, ...firstRowSource, ...firstRowSource]
+  const secondMarqueePartners = [...secondRowSource, ...secondRowSource, ...secondRowSource]
 
   return (
     <section

@@ -2,8 +2,6 @@ import { useEffect, useRef } from "react"
 
 export default function TestimonialMarquee({ testimonials, speed = 30 }) {
   const trackRef = useRef(null)
-  const pausedRef = useRef(false)
-  const resumeTimeoutRef = useRef(null)
   const itemRefs = useRef([])
 
   const loopedItems = [...testimonials, ...testimonials, ...testimonials]
@@ -20,29 +18,22 @@ export default function TestimonialMarquee({ testimonials, speed = 30 }) {
       const dt = (now - last) / 1000
       last = now
 
-      if (!pausedRef.current) {
-        const third = track.scrollWidth / 3
-        track.scrollLeft += speed * dt
-        if (track.scrollLeft >= third * 2) {
-          track.scrollLeft -= third
-        } else if (track.scrollLeft <= 0) {
-          track.scrollLeft += third
-        }
+      const third = track.scrollWidth / 3
+      track.scrollLeft += speed * dt
+      if (track.scrollLeft >= third * 2) {
+        track.scrollLeft -= third
+      } else if (track.scrollLeft <= 0) {
+        track.scrollLeft += third
       }
 
       const containerRect = track.getBoundingClientRect()
       const centerX = containerRect.left + containerRect.width / 2
       const half = containerRect.width / 2
 
-      const positions = itemRefs.current.map((el) => {
-        if (!el) return null
+      itemRefs.current.forEach((el) => {
+        if (!el) return
         const r = el.getBoundingClientRect()
-        return r.left + r.width / 2
-      })
-
-      positions.forEach((cx, i) => {
-        const el = itemRefs.current[i]
-        if (!el || cx == null) return
+        const cx = r.left + r.width / 2
         const norm = Math.min(Math.abs(cx - centerX) / half, 1)
         const scale = 1.15 - norm * 0.3
         const opacity = 1 - norm * 0.35
@@ -56,28 +47,10 @@ export default function TestimonialMarquee({ testimonials, speed = 30 }) {
     return () => cancelAnimationFrame(frame)
   }, [speed])
 
-  const pause = () => {
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
-    pausedRef.current = true
-  }
-
-  const resumeAfterDelay = () => {
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
-    resumeTimeoutRef.current = setTimeout(() => {
-      pausedRef.current = false
-    }, 1200)
-  }
-
   return (
     <div
       ref={trackRef}
       className="trusted-by-scroll flex items-center gap-8 overflow-x-auto px-6 md:px-16 py-6"
-      onTouchStart={pause}
-      onTouchEnd={resumeAfterDelay}
-      onTouchCancel={resumeAfterDelay}
-      onPointerDown={pause}
-      onPointerUp={resumeAfterDelay}
-      onPointerCancel={resumeAfterDelay}
     >
       {loopedItems.map((testimonial, index) => (
         <div
