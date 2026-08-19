@@ -34,7 +34,7 @@ const ServiceDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <p className="text-xl text-gray-400">Loading details...</p>
+        <p className="text-xl text-brand-white">Loading details...</p>
       </div>
     );
   }
@@ -42,7 +42,7 @@ const ServiceDetail = () => {
   if (!service) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center">
-        <p className="text-xl text-gray-400 mb-4">Service not found.</p>
+        <p className="text-xl text-brand-white mb-4">Service not found.</p>
         <Link to="/service" className="text-blue-500 hover:underline">
           Back to Services
         </Link>
@@ -57,7 +57,7 @@ const ServiceDetail = () => {
       <div className="pt-24 pb-12 px-4 max-w-6xl mx-auto">
         <Link
           to="/service"
-          className="text-gray-400 hover:text-white mb-6 inline-block transition"
+          className="text-brand-white hover:text-brand-green mb-6 inline-block transition"
         >
           &larr; Back to Services
         </Link>
@@ -76,7 +76,7 @@ const ServiceDetail = () => {
               />
             ) : (
               <div className="w-full h-80 bg-gray-800 rounded-xl flex items-center justify-center">
-                <span className="text-gray-500">No Image</span>
+                <span className="text-brand-white">No Image</span>
               </div>
             )}
           </div>
@@ -86,7 +86,7 @@ const ServiceDetail = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
               {service.title}
             </h1>
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-brand-white text-lg leading-relaxed">
               {service.description}
             </p>
           </div>
@@ -120,7 +120,7 @@ const ServiceDetail = () => {
                     <h3 className="text-white font-semibold text-lg">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-400 text-sm mt-2 line-clamp-2">
+                    <p className="text-brand-white text-sm mt-2 line-clamp-2">
                       {feature.description}
                     </p>
                   </div>

@@ -13,7 +13,15 @@ const Home = () => {
   useMouseParallax({ customCursor: true })
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div
+      className="min-h-screen bg-[#0a0a0a]"
+      style={{
+        backgroundImage: "url('/bgelement.jpg')",
+        backgroundSize: "100% auto",
+        backgroundPosition: "top center",
+        backgroundRepeat: "repeat-y",
+      }}
+    >
         <CustomCursor />
         <Nav />
         <Hero />
@@ -21,7 +29,7 @@ const Home = () => {
         <Gallery />
         <Service />
         <Testimonials />
-        <InTouchMessage />
+        <InTouchMessage transparent />
         <Footer />
     </div>
   )

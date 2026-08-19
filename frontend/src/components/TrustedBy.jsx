@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import SmokeWisp from "./SmokeWisp"
-import MarqueeRow from "./MarqueeRow"
+import AutoScrollRow from "./AutoScrollRow"
 import LazyImg from "./LazyImg"
 import useInView from "../hooks/useInView"
 
@@ -74,7 +74,7 @@ export default function TrustedBy() {
 
           <div className="space-y-4 md:space-y-5">
             <div className="relative trusted-by-fade-edges">
-              <MarqueeRow
+              <AutoScrollRow
                 items={firstMarqueePartners}
                 speed={45}
                 direction={1}
@@ -102,7 +102,7 @@ export default function TrustedBy() {
             </div>
 
             <div className="relative trusted-by-fade-edges">
-              <MarqueeRow
+              <AutoScrollRow
                 items={secondMarqueePartners}
                 speed={38}
                 direction={-1}

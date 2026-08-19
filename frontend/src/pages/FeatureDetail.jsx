@@ -45,7 +45,7 @@ const FeatureDetail = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <p className="text-xl text-gray-400">Loading details...</p>
+                <p className="text-xl text-brand-white">Loading details...</p>
             </div>
         );
     }
@@ -53,7 +53,7 @@ const FeatureDetail = () => {
     if (!feature) {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center">
-                <p className="text-xl text-gray-400 mb-4">Feature not found.</p>
+                <p className="text-xl text-brand-white mb-4">Feature not found.</p>
                 <Link to="/" className="text-blue-500 hover:underline">Back to Home</Link>
             </div>
         );
@@ -64,7 +64,7 @@ const FeatureDetail = () => {
             <div className="absolute -z-10 top-0 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
             <Nav />
             <div className="pt-24 pb-12 px-4 max-w-6xl mx-auto">
-                <Link to="/" className="text-gray-400 hover:text-white mb-6 inline-block transition">&larr; Back to Home</Link>
+                <Link to="/" className="text-brand-white hover:text-brand-green mb-6 inline-block transition">&larr; Back to Home</Link>
 
                 <div className="grid md:grid-cols-2 gap-10 mt-6">
                     {/* Main Image */}
@@ -81,7 +81,7 @@ const FeatureDetail = () => {
                             />
                         ) : (
                             <div className="w-full h-80 bg-gray-800 rounded-xl flex items-center justify-center">
-                                <span className="text-gray-500">No Image</span>
+                                <span className="text-brand-white">No Image</span>
                             </div>
                         )}
                     </div>
@@ -97,12 +97,12 @@ const FeatureDetail = () => {
                                 {feature.serviceId.title || "Service"}
                             </Link>
                         )}
-                        <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                        <p className="text-brand-white text-lg leading-relaxed mb-6">
                             {feature.description}
                         </p>
 
                         {feature.detailDescription && (
-                            <div className="text-gray-400">
+                            <div className="text-brand-white">
                                 <h3 className="text-xl font-semibold text-white mb-2">More Details</h3>
                                 <p className="whitespace-pre-line leading-relaxed">{feature.detailDescription}</p>
                             </div>
@@ -167,7 +167,7 @@ const FeatureDetail = () => {
                                         <h3 className="text-white text-xl font-bold group-hover:text-gray-300 transition">
                                             {work.title}
                                         </h3>
-                                        <p className="text-gray-400 mt-1 line-clamp-2">
+                                        <p className="text-brand-white mt-1 line-clamp-2">
                                             {work.description}
                                         </p>
                                     </div>

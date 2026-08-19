@@ -33,7 +33,7 @@ export default function FeatureCard({ project, delay = 0 }) {
         <h3 className="text-white text-xl font-bold group-hover:text-brand-green transition-colors duration-300">
           {project.title}
         </h3>
-        <p className="text-gray-400 mt-1 line-clamp-2">
+        <p className="text-brand-white mt-1 line-clamp-2">
           {project.description}
         </p>
       </div>

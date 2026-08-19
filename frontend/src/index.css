@@ -77,7 +77,7 @@ body.custom-cursor-active * {
 
 /* Trusted by marquee */
 .trusted-by-section {
-  background: #0a0a0a;
+  background: transparent;
 }
 
 /* Marquee row: clipping viewport, inner track animated via transform in JS */

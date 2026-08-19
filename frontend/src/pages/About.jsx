@@ -59,7 +59,7 @@ export default function About() {
           <h1 className="text-4xl md:text-5xl font-bold text-white">
             About Us
           </h1>
-          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+          <p className="text-brand-white mt-4 max-w-2xl mx-auto">
             A creative studio driven by passion, storytelling, and visual excellence.
           </p>
         </div>
@@ -78,12 +78,12 @@ export default function About() {
 
           <div>
             <h2 className="text-2xl font-bold text-white mb-4">Our Story</h2>
-            <p className="text-gray-400 leading-relaxed mb-4">
+            <p className="text-brand-white leading-relaxed mb-4">
               Moni Image Studio was founded with a simple belief, every image
               should tell a story. From intimate portraits to large-scale
               productions, we focus on emotion, detail, and authenticity.
             </p>
-            <p className="text-gray-400 leading-relaxed">
+            <p className="text-brand-white leading-relaxed">
               We collaborate closely with our clients to transform ideas into
               visuals that feel timeless and meaningful.
             </p>
@@ -97,7 +97,7 @@ export default function About() {
           </div>
         ) : team.length === 0 ? (
           <div className="max-w-6xl mx-auto text-center py-12">
-            <p className="text-gray-400">No team members to display yet.</p>
+            <p className="text-brand-white">No team members to display yet.</p>
           </div>
         ) : (
           <div className="max-w-6xl mx-auto bg-[#0a0a0a] rounded-xl overflow-hidden relative flex flex-col md:flex-row">
@@ -151,8 +151,8 @@ export default function About() {
             {/* Text */}
             <div className="md:w-1/2 w-full p-6 flex flex-col justify-center">
               <h2 className="text-2xl font-bold text-white mb-4">{member.name}</h2>
-              <p className="text-gray-400 mb-4">{member.role}</p>
-              <p className="text-gray-400 leading-relaxed">{member.bio}</p>
+              <p className="text-brand-white mb-4">{member.role}</p>
+              <p className="text-brand-white leading-relaxed">{member.bio}</p>
             </div>
           </div>
         )}
@@ -162,7 +162,7 @@ export default function About() {
   {/* Section Title */}
   <div className="text-center mb-12">
     <h2 className="text-3xl font-bold text-white">Team Activities</h2>
-    <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+    <p className="text-brand-white mt-4 max-w-2xl mx-auto">
       Behind the scenes: our team in action at events, shoots, and travels.
     </p>
   </div>
@@ -175,7 +175,7 @@ export default function About() {
       </div>
     ) : activities.length === 0 ? (
       <div className="col-span-full text-center py-12">
-        <p className="text-gray-400">No activities to display yet.</p>
+        <p className="text-brand-white">No activities to display yet.</p>
       </div>
     ) : (
       activities.map((activity) => (
@@ -189,7 +189,7 @@ export default function About() {
           />
           <div className="p-4">
             <h3 className="text-white font-bold text-lg">{activity.title}</h3>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-brand-white text-sm mt-1">
               {activity.description}
             </p>
           </div>

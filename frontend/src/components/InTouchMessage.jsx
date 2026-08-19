@@ -2,11 +2,11 @@ import { Link } from "react-router-dom"
 import SmokeWisp from "./SmokeWisp"
 import useInView from "../hooks/useInView"
 
-export default function HomeContact() {
+export default function HomeContact({ transparent = false }) {
 	const [ref, inView] = useInView()
 
 	return (
-		<section ref={ref} className={`relative isolate bg-[#0a0a0a] py-16 md:py-20 px-4 md:px-6 border-t border-white/10 overflow-hidden reveal ${inView ? "in-view" : ""}`}>
+		<section ref={ref} className={`relative isolate ${transparent ? "bg-transparent" : "bg-[#0a0a0a]"} py-16 md:py-20 px-4 md:px-6 border-t border-white/10 overflow-hidden reveal ${inView ? "in-view" : ""}`}>
 			<SmokeWisp rotate={6} className="absolute -z-10 top-[4%] left-1/2 -translate-x-1/2 w-[100px] h-[90%] pointer-events-none" />
 			<SmokeWisp flip rotate={16} className="absolute -z-10 bottom-4 right-[10%] w-[65px] h-[150px] pointer-events-none" />
 			<SmokeWisp color="#f8f8f8" rotate={-6} className="absolute -z-10 bottom-6 left-[25%] w-[55px] h-[130px] pointer-events-none" />

@@ -73,7 +73,7 @@ export default function Hero() {
 
   if (loading) {
     return (
-      <section className="relative h-[50vh] md:h-screen w-full bg-[#0a0a0a] flex items-center justify-center">
+      <section className="relative h-[50vh] md:h-screen w-full bg-transparent flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </section>
     );
@@ -111,7 +111,7 @@ export default function Hero() {
           ) : (
             <>
               {/* No active banner: pure background style, no image */}
-              <div className="absolute inset-0 bg-[#0a0a0a]"></div>
+              <div className="absolute inset-0 bg-transparent"></div>
               <SmokeWisp rotate={-15} className="absolute -z-10 bottom-8 left-[8%] w-[190px] h-[360px] pointer-events-none" />
               <SmokeWisp flip rotate={20} className="absolute -z-10 top-8 right-[10%] w-[170px] h-[320px] pointer-events-none" />
             </>
@@ -126,7 +126,7 @@ export default function Hero() {
 
             {/* Subtitle */}
             {banner.subtitle && (
-              <p className="text-gray-300 text-lg mb-12 md:text-1xl animate-fadeIn animation-delay-200">
+              <p className="text-brand-white text-lg mb-12 md:text-1xl animate-fadeIn animation-delay-200">
                 {banner.subtitle}
               </p>
             )}
@@ -173,7 +173,7 @@ export default function Hero() {
       )}
 
       {/* Optional scroll indicator */}
-      <span className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 text-gray-400 animate-bounce text-2xl">
+      <span className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 text-brand-white animate-bounce text-2xl">
         ↓
       </span>
     </section>

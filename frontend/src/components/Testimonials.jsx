@@ -1,5 +1,5 @@
 import SmokeWisp from "./SmokeWisp"
-import TestimonialMarquee from "./TestimonialMarquee"
+import ReviewsRow from "./ReviewsRow"
 import useInView from "../hooks/useInView"
 
 const testimonials = [
@@ -45,7 +45,7 @@ export default function Testimonials() {
   const [ref, inView] = useInView()
 
   return (
-    <section ref={ref} className={`relative isolate overflow-hidden py-20 px-6 bg-[#0a0a0a] reveal ${inView ? "in-view" : ""}`}>
+    <section ref={ref} className={`relative isolate overflow-hidden py-20 px-6 bg-transparent reveal ${inView ? "in-view" : ""}`}>
       <SmokeWisp rotate={-6} className="absolute -z-10 top-[3%] left-[42%] w-[100px] h-[92%] pointer-events-none" />
       <SmokeWisp flip rotate={12} className="absolute -z-10 bottom-8 right-[10%] w-[70px] h-[160px] pointer-events-none" />
       <SmokeWisp color="#f8f8f8" flip rotate={7} className="absolute -z-10 top-10 right-[30%] w-[60px] h-[150px] pointer-events-none" />
@@ -54,12 +54,12 @@ export default function Testimonials() {
         <h2 className="text-3xl md:text-4xl font-bold text-white hover:text-brand-green transition-colors duration-300 inline-block cursor-default">
           What Our Clients Say
         </h2>
-        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+        <p className="text-brand-white mt-4 max-w-2xl mx-auto">
           Real feedback from clients we&apos;ve had the pleasure of working with.
         </p>
       </div>
 
-      <TestimonialMarquee testimonials={testimonials} />
+      <ReviewsRow testimonials={testimonials} />
     </section>
   )
 }

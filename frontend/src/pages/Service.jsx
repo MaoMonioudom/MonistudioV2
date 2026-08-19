@@ -45,7 +45,7 @@ export default function Service() {
           <h1 className="text-4xl md:text-5xl font-bold text-white">
             Services
           </h1>
-          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+          <p className="text-brand-white mt-4 max-w-2xl mx-auto">
             We provide creative solutions tailored to your vision, from concept
             to final delivery.
           </p>
@@ -55,7 +55,7 @@ export default function Service() {
         {loading ? (
           <div className="text-white text-center text-xl">Loading services...</div>
         ) : services.length === 0 ? (
-          <div className="text-gray-400 text-center text-xl">No services available at the moment.</div>
+          <div className="text-brand-white text-center text-xl">No services available at the moment.</div>
         ) : (
           <>
             <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
@@ -83,7 +83,7 @@ export default function Service() {
                   <h3 className="text-white font-bold text-xl mb-3">
                     {service.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-brand-white text-sm leading-relaxed">
                     {service.description}
                   </p>
                 </div>

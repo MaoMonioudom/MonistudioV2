@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-export default function MarqueeRow({ items, speed = 40, direction = 1, renderItem, className = "" }) {
+export default function AutoScrollRow({ items, speed = 40, direction = 1, renderItem, className = "" }) {
   const trackRef = useRef(null)
   const containerRef = useRef(null)
   const posRef = useRef(0)

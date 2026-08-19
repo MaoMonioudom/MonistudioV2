@@ -31,7 +31,7 @@ export default function Gallery() {
   }, [inView])
 
   return (
-    <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-[#0a0a0a] px-6 reveal ${inView ? "in-view" : ""}`}>
+    <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-transparent px-6 reveal ${inView ? "in-view" : ""}`}>
       <SmokeWisp rotate={-10} className="absolute -z-10 top-[3%] right-[15%] w-[100px] h-[92%] pointer-events-none" />
       <SmokeWisp flip rotate={18} className="absolute -z-10 bottom-4 left-[4%] w-[70px] h-[160px] pointer-events-none" />
       <SmokeWisp color="#f8f8f8" flip rotate={-8} className="absolute -z-10 bottom-8 right-[25%] w-[60px] h-[140px] pointer-events-none" />
@@ -42,7 +42,7 @@ export default function Gallery() {
         {loading ? (
           <div className="text-white text-center">Loading...</div>
         ) : projects.length === 0 ? (
-          <p className="text-gray-400 text-center">No projects yet.</p>
+          <p className="text-brand-white text-center">No projects yet.</p>
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">

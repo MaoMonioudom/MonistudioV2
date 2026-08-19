@@ -27,7 +27,7 @@ export default function ServiceCard({ service, delay = 0, extraClassName = "" })
         <h3 className="text-white font-bold text-xl mb-3">
           {service.title}
         </h3>
-        <p className="text-gray-400 text-sm leading-relaxed">
+        <p className="text-brand-white text-sm leading-relaxed">
           {service.description}
         </p>
       </div>

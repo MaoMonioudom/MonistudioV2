@@ -180,7 +180,7 @@ export default function Contact() {
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Let's Connect
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-brand-white text-lg max-w-2xl mx-auto">
               We're here to help and answer any question you might have. Reach out to us through any of the channels below.
             </p>
           </div>
@@ -197,7 +197,7 @@ export default function Contact() {
                 <FiMail size={24} className="text-white flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="text-white font-semibold text-lg mb-1">Email</h3>
-                  <a href="mailto:monirathnakmao@gmail.com" className="text-gray-400 hover:text-white transition">
+                  <a href="mailto:monirathnakmao@gmail.com" className="text-brand-white hover:text-brand-green transition">
                     monirathnakmao@gmail.com
                   </a>
                 </div>
@@ -208,7 +208,7 @@ export default function Contact() {
                 <FiPhone size={24} className="text-white flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="text-white font-semibold text-lg mb-1">Phone</h3>
-                  <a href="tel:+85515966757" className="text-gray-400 hover:text-white transition">
+                  <a href="tel:+85515966757" className="text-brand-white hover:text-brand-green transition">
                     +855 15 966 757
                   </a>
                 </div>
@@ -219,7 +219,7 @@ export default function Contact() {
                 <FiGlobe size={24} className="text-white flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="text-white font-semibold text-lg mb-1">Website</h3>
-                  <a href="https://www.monistudio.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition">
+                  <a href="https://www.monistudio.com" target="_blank" rel="noopener noreferrer" className="text-brand-white hover:text-brand-green transition">
                     www.monistudio.com
                   </a>
                 </div>
@@ -230,10 +230,10 @@ export default function Contact() {
                 <FiMapPin size={24} className="text-white flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="text-white font-semibold text-lg mb-1">Address</h3>
-                  <p className="text-gray-400 mb-3">
+                  <p className="text-brand-white mb-3">
                     ផ្លូវ៣៧១ សង្គាត់បឹងទំពុន២ ខណ្ឌមានជ័យ រាជធានីភ្នំពេញ
                   </p>
-                  <p className="text-gray-400 mb-3">
+                  <p className="text-brand-white mb-3">
                     Street 271, Sangkat Boeng Tumpun 2, Khan Meanchey, Phnom Penh
                   </p>
                   <a
@@ -254,7 +254,7 @@ export default function Contact() {
               <form onSubmit={handleFormSubmit} className="space-y-4">
                 {/* Name */}
                 <div>
-                  <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-2">
+                  <label htmlFor="name" className="block text-brand-white text-sm font-medium mb-2">
                     Your Name
                   </label>
                   <input
@@ -271,7 +271,7 @@ export default function Contact() {
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-brand-white text-sm font-medium mb-2">
                     Your Email
                   </label>
                   <input
@@ -288,7 +288,7 @@ export default function Contact() {
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-gray-300 text-sm font-medium mb-2">
+                  <label htmlFor="message" className="block text-brand-white text-sm font-medium mb-2">
                     Message
                   </label>
                   <textarea
@@ -335,16 +335,16 @@ export default function Contact() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-white mb-3">Confirm Message</h3>
-            <p className="text-gray-400 mb-6">
+            <p className="text-brand-white mb-6">
               Are you sure you want to send this message? Please review it once before submitting.
             </p>
 
             {/* Message Preview */}
             <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 mb-6">
-              <p className="text-gray-300 text-sm"><span className="font-semibold text-white">From:</span> {formData.name}</p>
-              <p className="text-gray-300 text-sm mb-2"><span className="font-semibold text-white">Email:</span> {formData.email}</p>
-              <p className="text-gray-300 text-sm break-words"><span className="font-semibold text-white">Message:</span></p>
-              <p className="text-gray-400 text-sm mt-2 whitespace-pre-wrap">{formData.message}</p>
+              <p className="text-brand-white text-sm"><span className="font-semibold text-white">From:</span> {formData.name}</p>
+              <p className="text-brand-white text-sm mb-2"><span className="font-semibold text-white">Email:</span> {formData.email}</p>
+              <p className="text-brand-white text-sm break-words"><span className="font-semibold text-white">Message:</span></p>
+              <p className="text-brand-white text-sm mt-2 whitespace-pre-wrap">{formData.message}</p>
             </div>
 
             {/* Action Buttons */}

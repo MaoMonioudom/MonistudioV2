@@ -74,7 +74,7 @@ export default function Works() {
           <h1 className="text-4xl md:text-5xl font-bold text-white">
             Our Portfolio
           </h1>
-          <p className="text-gray-400 mt-4">
+          <p className="text-brand-white mt-4">
             A selection of projects crafted with passion
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function Works() {
         {loading ? (
           <div className="text-white text-center text-xl">Loading works...</div>
         ) : works.length === 0 ? (
-          <div className="text-gray-400 text-center text-xl">No works found yet.</div>
+          <div className="text-brand-white text-center text-xl">No works found yet.</div>
         ) : (
           <>
             <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
@@ -137,7 +137,7 @@ export default function Works() {
                   <h3 className="text-white text-xl font-bold group-hover:text-gray-300 transition">
                     {work.title}
                   </h3>
-                  <p className="text-gray-400 mt-1 line-clamp-2">
+                  <p className="text-brand-white mt-1 line-clamp-2">
                     {work.description}
                   </p>
                 </div>
