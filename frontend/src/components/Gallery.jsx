@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import SmokeWisp from "./SmokeWisp"
@@ -7,31 +7,36 @@ import useInView from "../hooks/useInView"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-export default function Gallery() {
+export default function Gallery({ projects: projectsProp, loading: loadingProp, gridRef: gridRefProp }) {
   const [ref, inView] = useInView()
-  const [projects, setProjects] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [ownProjects, setOwnProjects] = useState([])
+  const [ownLoading, setOwnLoading] = useState(true)
+  const ownGridRef = useRef(null)
+  const controlled = projectsProp !== undefined
+  const projects = controlled ? projectsProp : ownProjects
+  const loading = controlled ? loadingProp : ownLoading
+  const gridRef = gridRefProp || ownGridRef
 
   useEffect(() => {
-    if (!inView) return
+    if (controlled || !inView) return
     const fetchProjects = async () => {
       try {
         const response = await axios.get(`${API_URL}/features`, {
           params: { showOnHome: true, limit: 6 },
         })
-        setProjects(response.data.features)
-        setLoading(false)
+        setOwnProjects(response.data.features)
+        setOwnLoading(false)
       } catch (error) {
         console.error("Error fetching projects:", error)
-        setLoading(false)
+        setOwnLoading(false)
       }
     }
 
     fetchProjects()
-  }, [inView])
+  }, [inView, controlled])
 
   return (
-    <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-transparent px-6 reveal ${inView ? "in-view" : ""}`}>
+    <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-[#0a0a0a] px-6 reveal ${inView ? "in-view" : ""}`}>
       <SmokeWisp rotate={-10} className="absolute -z-10 top-[3%] right-[15%] w-[100px] h-[92%] pointer-events-none" />
       <SmokeWisp flip rotate={18} className="absolute -z-10 bottom-4 left-[4%] w-[70px] h-[160px] pointer-events-none" />
       <SmokeWisp color="#f8f8f8" flip rotate={-8} className="absolute -z-10 bottom-8 right-[25%] w-[60px] h-[140px] pointer-events-none" />
@@ -45,10 +50,26 @@ export default function Gallery() {
           <p className="text-brand-white text-center">No projects yet.</p>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {projects.map((project, index) => (
-                <FeatureCard key={project._id} project={project} delay={(index % 3) * 0.12} />
-              ))}
+            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+              {projects.map((project, index) => {
+                const cols = 3
+                const col = index % cols
+                const row = Math.floor(index / cols)
+                const centerCol = (cols - 1) / 2
+                const originX = (centerCol - col) * 90
+                const originY = -(row + 1) * 50 - 40
+                const originRotate = (col - centerCol) * 7 + (row % 2 === 0 ? -4 : 4)
+                return (
+                  <FeatureCard
+                    key={project._id}
+                    project={project}
+                    delay={index * 0.09}
+                    originX={originX}
+                    originY={originY}
+                    originRotate={originRotate}
+                  />
+                )
+              })}
             </div>
             <div className="mt-12 text-center">
               <Link

@@ -29,7 +29,7 @@ export default function Services() {
   }, [inView])
 
   return (
-    <section ref={ref} className={`relative isolate overflow-hidden py-20 px-6 bg-transparent reveal ${inView ? "in-view" : ""}`}>
+    <section ref={ref} className={`relative isolate overflow-hidden py-20 px-6 bg-[#0a0a0a] reveal ${inView ? "in-view" : ""}`}>
       <SmokeWisp flip rotate={-15} className="absolute -z-10 top-[3%] left-[12%] w-[100px] h-[92%] pointer-events-none" />
       <SmokeWisp rotate={14} className="absolute -z-10 bottom-6 right-[10%] w-[70px] h-[160px] pointer-events-none" />
       <SmokeWisp color="#f8f8f8" rotate={-9} className="absolute -z-10 bottom-10 left-[35%] w-[60px] h-[140px] pointer-events-none" />

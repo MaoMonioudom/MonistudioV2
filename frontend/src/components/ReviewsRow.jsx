@@ -106,7 +106,7 @@ export default function ReviewsRow({ testimonials, speed = 30 }) {
             ref={(el) => { itemRefs.current[index] = el }}
             className="flex-shrink-0 w-[240px] md:w-[300px] h-[340px] md:h-[380px]"
           >
-            <div className="relative overflow-hidden bg-black/40 border border-white/10 rounded-xl p-8 hover:border-brand-green/50 transition-colors duration-300 h-full flex flex-col">
+            <div className="relative overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 hover:border-brand-green/50 transition-colors duration-300 h-full flex flex-col">
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-brand-green via-white/40 to-transparent"></div>
               <p className="text-brand-green text-3xl font-serif leading-none mb-3">&ldquo;</p>
               <p className="text-brand-white text-sm leading-relaxed mb-6 line-clamp-7 flex-1">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import useInView from "../hooks/useInView"
 
-export default function FeatureCard({ project, delay = 0 }) {
+export default function FeatureCard({ project, delay = 0, originX = 0, originY = 0, originRotate = 0 }) {
   const [ref, inView] = useInView({ threshold: 0, rootMargin: "0px 0px -10% 0px" })
 
   return (
@@ -9,7 +9,10 @@ export default function FeatureCard({ project, delay = 0 }) {
       ref={ref}
       to={`/feature/${project._id}`}
       className={`group cursor-pointer block card-reveal ${inView ? "in-view" : ""}`}
-      style={{ transitionDelay: inView ? `${delay}s` : "0s" }}
+      style={{
+        transitionDelay: inView ? `${delay}s` : "0s",
+        transform: inView ? undefined : `translate(${originX}px, ${originY}px) rotate(${originRotate}deg) scale(0.82)`,
+      }}
     >
       {/* Image */}
       <div className="overflow-hidden rounded-lg relative">
