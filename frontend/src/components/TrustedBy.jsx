@@ -84,8 +84,8 @@ export default function TrustedBy() {
                     href={partner.website || '#'}
                     target={partner.website ? '_blank' : '_self'}
                     rel="noopener noreferrer"
-                    className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-[#0a0a0a] flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
-                      partner.website ? 'cursor-pointer hover:bg-white/5' : 'cursor-default'
+                    className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
+                      partner.website ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
                     }`}
                     onClick={(e) => !partner.website && e.preventDefault()}
                     aria-label={partner.name}
@@ -112,8 +112,8 @@ export default function TrustedBy() {
                     href={partner.website || '#'}
                     target={partner.website ? '_blank' : '_self'}
                     rel="noopener noreferrer"
-                    className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 rounded-2xl bg-[#0a0a0a] flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
-                      partner.website ? 'cursor-pointer hover:bg-white/5' : 'cursor-default'
+                    className={`group h-20 md:h-24 min-w-[170px] md:min-w-[220px] px-5 md:px-6 flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
+                      partner.website ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
                     }`}
                     onClick={(e) => !partner.website && e.preventDefault()}
                     aria-label={partner.name}

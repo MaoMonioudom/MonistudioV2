@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/service" element={<Service />} />
           <Route path="/service/:id" element={<ServiceDetail />} />
