@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import SmokeWisp from "./SmokeWisp"
@@ -7,33 +7,28 @@ import useInView from "../hooks/useInView"
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-export default function Gallery({ projects: projectsProp, loading: loadingProp, gridRef: gridRefProp }) {
+export default function Gallery() {
   const [ref, inView] = useInView()
-  const [ownProjects, setOwnProjects] = useState([])
-  const [ownLoading, setOwnLoading] = useState(true)
-  const ownGridRef = useRef(null)
-  const controlled = projectsProp !== undefined
-  const projects = controlled ? projectsProp : ownProjects
-  const loading = controlled ? loadingProp : ownLoading
-  const gridRef = gridRefProp || ownGridRef
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (controlled || !inView) return
+    if (!inView) return
     const fetchProjects = async () => {
       try {
         const response = await axios.get(`${API_URL}/features`, {
           params: { showOnHome: true, limit: 6 },
         })
-        setOwnProjects(response.data.features)
-        setOwnLoading(false)
+        setProjects(response.data.features)
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching projects:", error)
-        setOwnLoading(false)
+        setLoading(false)
       }
     }
 
     fetchProjects()
-  }, [inView, controlled])
+  }, [inView])
 
   return (
     <section ref={ref} className={`relative isolate overflow-hidden py-16 bg-[#0a0a0a] px-6 reveal ${inView ? "in-view" : ""}`}>
@@ -50,7 +45,7 @@ export default function Gallery({ projects: projectsProp, loading: loadingProp, 
           <p className="text-brand-white text-center">No projects yet.</p>
         ) : (
           <>
-            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
               {projects.map((project, index) => {
                 const cols = 3
                 const col = index % cols
