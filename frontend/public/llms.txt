@@ -1,0 +1,11 @@
+# Moni Image Studio
+
+> Moni Image Studio is a professional photography and imaging studio, offering portrait, event, product, and commercial photography services. This site showcases the studio's portfolio, service offerings, and team, and provides a way for clients to get in touch.
+
+## Pages
+
+- [Home](https://moniimagestudio.com/): Overview of Moni Image Studio, featured work, and highlighted services.
+- [Portfolio](https://moniimagestudio.com/portfolio): Gallery of past photography and imaging projects.
+- [Services](https://moniimagestudio.com/service): List of photography and imaging services offered.
+- [About](https://moniimagestudio.com/about): Background on the studio and its team.
+- [Contact](https://moniimagestudio.com/contact): Contact information and inquiry form for booking services.
