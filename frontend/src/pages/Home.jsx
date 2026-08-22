@@ -1,3 +1,4 @@
+import Seo from "../components/Seo"
 import Nav from "../components/Nav"
 import Hero from "../components/Hero"
 import AboutTeaser from "../components/AboutTeaser"
@@ -24,6 +25,11 @@ const Home = () => {
         backgroundRepeat: "repeat-y",
       }}
     >
+        <Seo
+          title="Moni Image Studio | Professional Photography & Imaging Services"
+          description="Moni Image Studio offers professional portrait, event, product, and commercial photography services. View our portfolio and book a session today."
+          path="/"
+        />
         <CustomCursor />
         <Nav />
         <Hero />

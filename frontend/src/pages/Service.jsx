@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
+import Seo from "../components/Seo.jsx"
 import Nav from "../components/Nav.jsx"
 import InTouchMessage from "../components/InTouchMessage.jsx"
 import Footer from "../components/Footer.jsx"
@@ -35,6 +36,11 @@ export default function Service() {
 
   return (
     <>
+      <Seo
+        title="Services | Moni Image Studio"
+        description="Explore the photography and imaging services offered by Moni Image Studio, including portraits, events, products, and commercial shoots."
+        path="/service"
+      />
       <Nav />
 
       <section className="relative isolate overflow-hidden min-h-screen bg-[#0a0a0a] pt-32 px-6">

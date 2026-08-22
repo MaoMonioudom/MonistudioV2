@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Seo from "../components/Seo.jsx";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
 import studioImage from "../assets/logo.png";
@@ -50,6 +51,11 @@ export default function About() {
 
   return (
     <>
+      <Seo
+        title="About Us | Moni Image Studio"
+        description="Learn about Moni Image Studio, our team, and our approach to professional photography and imaging."
+        path="/about"
+      />
       <Nav />
 
       <section className="relative isolate overflow-hidden bg-[#0a0a0a] pt-32 px-6">

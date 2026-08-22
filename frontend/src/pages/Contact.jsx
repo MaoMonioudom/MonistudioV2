@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Seo from "../components/Seo.jsx";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
 import contactImage from "../assets/temp.webp"; // fallback image
@@ -89,6 +90,11 @@ export default function Contact() {
 
   return (
     <>
+      <Seo
+        title="Contact | Moni Image Studio"
+        description="Get in touch with Moni Image Studio to book a photography session or ask about our services."
+        path="/contact"
+      />
       <Nav />
 
       {/* Banner Section */}

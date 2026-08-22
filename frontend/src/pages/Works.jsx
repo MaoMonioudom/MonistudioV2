@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
+import Seo from "../components/Seo.jsx"
 import Nav from "../components/Nav.jsx"
 import InTouchMessage from "../components/InTouchMessage.jsx"
 import Footer from "../components/Footer.jsx"
@@ -64,6 +65,11 @@ export default function Works() {
 
   return (
     <>
+      <Seo
+        title="Portfolio | Moni Image Studio"
+        description="Browse Moni Image Studio's photography portfolio, featuring portrait, event, product, and commercial work."
+        path="/portfolio"
+      />
       <Nav />
 
       <section className="relative isolate overflow-hidden min-h-screen bg-[#0a0a0a] pt-32 px-6">
