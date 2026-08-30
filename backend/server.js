@@ -7,7 +7,7 @@ const connectDB = require('./config/db');
 dotenv.config();
 
 // Connect to database
-connectDB();
+connectDB().catch((error) => console.error(`MongoDB connection error: ${error.message}`));
 
 const app = express();
 
