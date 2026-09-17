@@ -69,8 +69,8 @@ export default function Works() {
   return (
     <>
       <Seo
-        title="Portfolio | Moni Image Studio"
-        description="Browse Moni Image Studio's photography portfolio, featuring portrait, event, product, and commercial work."
+        title="Gallery | Moni Image Studio"
+        description="Browse Moni Image Studio's gallery, featuring portrait, event, product, and commercial work."
         path="/portfolio"
       />
       <Nav />
@@ -89,7 +89,7 @@ export default function Works() {
           {/* Page Title */}
           <div className="text-center mb-14">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Our Portfolio
+              Gallery
             </h1>
             <p className="text-brand-white mt-4">
               A selection of projects crafted with passion

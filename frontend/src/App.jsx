@@ -9,6 +9,7 @@ const About = lazy(() => import("./pages/About"))
 const Contact = lazy(() => import("./pages/Contact"))
 const FeatureDetail = lazy(() => import("./pages/FeatureDetail"))
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"))
+const ComingSoon = lazy(() => import("./pages/ComingSoon"))
 
 // Admin imports
 const Login = lazy(() => import("./admins/Login"))
@@ -27,6 +28,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/feature/:id" element={<FeatureDetail />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
           </Route>
 
           {/* Admin Routes */}

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
-import { FiDownload } from "react-icons/fi";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -9,7 +8,7 @@ export default function Nav() {
   // Center nav links
   const menuLinks = {
     Home: "/",
-    Portfolio: "/portfolio",
+    Gallery: "/portfolio",
     Services: "/service",
     About: "/about",
   };
@@ -42,14 +41,12 @@ export default function Nav() {
           >
             Contact
           </Link>
-          <a
-            href="/portfolio.pdf"
-            download
+          <Link
+            to="/coming-soon"
             className="inline-flex items-center gap-2 bg-brand-green text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-white hover:text-black transition-colors duration-300"
           >
-            <FiDownload size={16} />
-            Download Portfolio
-          </a>
+            Portfolio
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -76,15 +73,13 @@ export default function Nav() {
               <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
             </li>
           </ul>
-          <a
-            href="/portfolio.pdf"
-            download
+          <Link
+            to="/coming-soon"
             onClick={() => setOpen(false)}
             className="mt-6 inline-flex items-center justify-center gap-2 w-full bg-brand-green text-white px-4 py-3 rounded-full text-sm font-bold hover:bg-white hover:text-black transition-colors duration-300"
           >
-            <FiDownload size={16} />
-            Download Portfolio
-          </a>
+            Portfolio
+          </Link>
         </div>
       )}
     </header>
