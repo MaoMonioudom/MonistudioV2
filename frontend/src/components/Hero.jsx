@@ -81,7 +81,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative isolate h-[50vh] md:h-screen w-full overflow-hidden"
+      className="relative isolate h-[50vh] md:h-screen w-full overflow-hidden select-none"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -102,6 +102,7 @@ export default function Hero() {
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
                 fetchPriority={index === 0 ? "high" : "auto"}
+                draggable="false"
                 className="absolute inset-0 w-full h-full object-cover"
               />
 

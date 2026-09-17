@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import Seo from "../components/Seo.jsx"
 import Nav from "../components/Nav.jsx"
+import SmokeWisp from "../components/SmokeWisp.jsx"
 import InTouchMessage from "../components/InTouchMessage.jsx"
 import Footer from "../components/Footer.jsx"
 
@@ -45,6 +47,9 @@ export default function Service() {
 
       <section className="relative isolate overflow-hidden min-h-screen bg-[#0a0a0a] pt-32 px-6">
         <div className="absolute -z-10 -top-24 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
+        <SmokeWisp rotate={10} className="absolute -z-10 top-[5%] left-[15%] w-[90px] h-[92%] pointer-events-none" />
+        <SmokeWisp flip rotate={-16} className="absolute -z-10 bottom-8 right-[10%] w-[70px] h-[160px] pointer-events-none" />
+        <SmokeWisp color="#f8f8f8" flip rotate={7} className="absolute -z-10 top-16 right-[32%] w-[55px] h-[130px] pointer-events-none" />
 
         {/* Page Title */}
         <div className="text-center mb-20">
@@ -64,7 +69,7 @@ export default function Service() {
           <div className="text-brand-white text-center text-xl">No services available at the moment.</div>
         ) : (
           <>
-            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+            <div className="max-w-[1360px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
               {services.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((service) => (
               <Link
                 to={`/service/${service._id}`}
@@ -73,13 +78,14 @@ export default function Service() {
               >
                 {/* Image */}
                 {service.imageUrl && (
-                  <div className="overflow-hidden">
+                  <div className="overflow-hidden relative aspect-[4/3]">
                     <img
                       src={service.imageUrl}
                       alt={service.title}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
+                      draggable="false"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />
                   </div>
                 )}
@@ -103,9 +109,10 @@ export default function Service() {
                 <button
                   onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                  aria-label="Previous page"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-white/15 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:border-brand-green hover:text-brand-green transition"
                 >
-                  Previous
+                  <FiChevronLeft size={18} />
                 </button>
 
                 <div className="flex gap-2">
@@ -113,10 +120,10 @@ export default function Service() {
                     <button
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`px-3 py-2 rounded-lg font-bold transition ${
+                      className={`w-10 h-10 rounded-full font-bold transition ${
                         currentPage === i + 1
-                          ? "bg-white text-black"
-                          : "bg-gray-700 text-white hover:bg-gray-600"
+                          ? "bg-brand-green text-white"
+                          : "border border-white/15 text-white hover:border-brand-green hover:text-brand-green"
                       }`}
                     >
                       {i + 1}
@@ -127,9 +134,10 @@ export default function Service() {
                 <button
                   onClick={() => setCurrentPage(Math.min(Math.ceil(services.length / itemsPerPage), currentPage + 1))}
                   disabled={currentPage === Math.ceil(services.length / itemsPerPage)}
-                  className="px-4 py-2 rounded-lg font-bold bg-white text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                  aria-label="Next page"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-white/15 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:border-brand-green hover:text-brand-green transition"
                 >
-                  Next
+                  <FiChevronRight size={18} />
                 </button>
               </div>
             )}

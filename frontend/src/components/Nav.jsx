@@ -1,17 +1,17 @@
 import { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
-import { FaInstagram, FaGithub } from "react-icons/fa";
+import { FiDownload } from "react-icons/fi";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
 
-  // Menu items and their routes
+  // Center nav links
   const menuLinks = {
+    Home: "/",
     Portfolio: "/portfolio",
     Services: "/service",
     About: "/about",
-    Contact: "/contact",
   };
 
   const menuItems = Object.keys(menuLinks);
@@ -34,14 +34,22 @@ export default function Nav() {
           ))}
         </ul>
 
-        {/* Social Icons */}
-        <div className="hidden md:flex gap-4">
-          {/* <a href="https://instagram.com" target="_blank" className="text-white hover:opacity-60">
-            <FaInstagram />
+        {/* Right-side actions */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            to="/contact"
+            className="text-white font-bold uppercase tracking-wider text-sm hover:text-brand-green transition-colors duration-300"
+          >
+            Contact
+          </Link>
+          <a
+            href="/portfolio.pdf"
+            download
+            className="inline-flex items-center gap-2 bg-brand-green text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-white hover:text-black transition-colors duration-300"
+          >
+            <FiDownload size={16} />
+            Download Portfolio
           </a>
-          <a href="https://github.com" target="_blank" className="text-white hover:opacity-60">
-            <FaGithub />
-          </a> */}
         </div>
 
         {/* Mobile Menu Button */}
@@ -64,7 +72,19 @@ export default function Nav() {
                 </Link>
               </li>
             ))}
+            <li className="hover:text-brand-green transition-colors duration-300 cursor-pointer">
+              <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
+            </li>
           </ul>
+          <a
+            href="/portfolio.pdf"
+            download
+            onClick={() => setOpen(false)}
+            className="mt-6 inline-flex items-center justify-center gap-2 w-full bg-brand-green text-white px-4 py-3 rounded-full text-sm font-bold hover:bg-white hover:text-black transition-colors duration-300"
+          >
+            <FiDownload size={16} />
+            Download Portfolio
+          </a>
         </div>
       )}
     </header>

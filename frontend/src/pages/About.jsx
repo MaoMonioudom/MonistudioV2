@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Seo from "../components/Seo.jsx";
 import Nav from "../components/Nav.jsx";
+import SmokeWisp from "../components/SmokeWisp.jsx";
 import Footer from "../components/Footer.jsx";
 import studioImage from "../assets/logo.png";
 import InTouchMessage from "../components/InTouchMessage.jsx";
@@ -10,16 +11,11 @@ import teamImage from "../assets/temp.webp";
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function About() {
-  const [current, setCurrent] = useState(0);
+  const [activeCard, setActiveCard] = useState(null);
   const [activities, setActivities] = useState([]);
   const [loadingActivities, setLoadingActivities] = useState(true);
   const [team, setTeam] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
-
-  const member = team[current] || {};
-
-  const prev = () => setCurrent((current - 1 + team.length) % team.length);
-  const next = () => setCurrent((current + 1) % team.length);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -60,6 +56,9 @@ export default function About() {
 
       <section className="relative isolate overflow-hidden bg-[#0a0a0a] pt-32 px-6">
         <div className="absolute -z-10 -top-24 -right-24 w-[45%] h-[400px] bg-brand-green/15 blur-[150px] rounded-full pointer-events-none"></div>
+        <SmokeWisp flip rotate={14} className="absolute -z-10 top-[4%] left-[12%] w-[95px] h-[92%] pointer-events-none" />
+        <SmokeWisp rotate={-10} className="absolute -z-10 bottom-10 right-[14%] w-[65px] h-[150px] pointer-events-none" />
+        <SmokeWisp color="#f8f8f8" rotate={6} className="absolute -z-10 top-14 right-[38%] w-[55px] h-[130px] pointer-events-none" />
         {/* Page Title */}
         <div className="text-center mb-20">
           <h1 className="text-4xl md:text-5xl font-bold text-white">
@@ -78,6 +77,7 @@ export default function About() {
               alt="Studio"
               loading="lazy"
               decoding="async"
+              draggable="false"
               className="w-full h-auto md:h-96 object-contain md:object-cover"
             />
           </div>
@@ -95,74 +95,70 @@ export default function About() {
             </p>
           </div>
         </div>
+      </section>
 
-        {/* Team Slider */}
+      {/* Meet The Team */}
+      <section className="bg-[#0a0a0a] py-20 px-6">
+        <div className="text-center mb-16">
+          <div className="w-12 h-1 bg-brand-green rounded-full mx-auto mb-4"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white hover:text-brand-green transition-colors duration-300 inline-block cursor-default">
+            Meet The Team
+          </h2>
+          <p className="text-brand-white mt-4 max-w-2xl mx-auto">
+            The people behind every shoot, story, and creative decision.
+          </p>
+        </div>
+
         {loadingTeam ? (
-          <div className="max-w-6xl mx-auto flex justify-center py-12">
+          <div className="flex justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
           </div>
         ) : team.length === 0 ? (
-          <div className="max-w-6xl mx-auto text-center py-12">
+          <div className="text-center py-12">
             <p className="text-brand-white">No team members to display yet.</p>
           </div>
         ) : (
-          <div className="max-w-6xl mx-auto bg-[#0a0a0a] rounded-xl overflow-hidden relative flex flex-col md:flex-row">
-            {/* Left Arrow Button */}
-            <button
-              onClick={prev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full transition duration-300"
-              aria-label="Previous team member"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
+          <div className="max-w-[1360px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+            {team.map((member, index) => {
+              const isActive = activeCard === index
+              return (
+                <div
+                  key={member._id || index}
+                  onClick={() => setActiveCard(isActive ? null : index)}
+                  className="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer"
+                >
+                  <img
+                    src={member.imageUrl || teamImage}
+                    alt={member.name}
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                  />
 
-            {/* Right Arrow Button */}
-            <button
-              onClick={next}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full transition duration-300"
-              aria-label="Next team member"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+                  {/* Name + role caption, always visible */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                    <h3 className="text-white font-bold text-lg leading-tight">{member.name}</h3>
+                    <p className="text-brand-white text-sm">{member.role}</p>
+                  </div>
 
-            {/* Dot Indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-              {team.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrent(index)}
-                  className={`w-2 h-2 rounded-full transition duration-300 ${
-                    index === current ? 'bg-white' : 'bg-white/40 hover:bg-white/60'
-                  }`}
-                  aria-label={`Go to team member ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            {/* Image */}
-            <div className="md:w-1/2 w-full overflow-hidden">
-              <img
-                src={member.imageUrl || teamImage}
-                alt={member.name}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover transition duration-500"
-              />
-            </div>
-
-            {/* Text */}
-            <div className="md:w-1/2 w-full p-6 flex flex-col justify-center">
-              <h2 className="text-2xl font-bold text-white mb-4">{member.name}</h2>
-              <p className="text-brand-white mb-4">{member.role}</p>
-              <p className="text-brand-white leading-relaxed">{member.bio}</p>
-            </div>
+                  {/* Bio overlay, revealed on hover (desktop) or tap (mobile) */}
+                  <div
+                    className={`absolute inset-0 bg-black/85 p-4 flex flex-col justify-center transition-opacity duration-300 ${
+                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                    }`}
+                  >
+                    <h3 className="text-white font-bold text-lg mb-2">{member.name}</h3>
+                    <p className="text-brand-green text-sm mb-3">{member.role}</p>
+                    <p className="text-brand-white text-sm leading-relaxed">{member.bio}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         )}
       </section>
+
       {/* Team Activities */}
 <section className="bg-[#0a0a0a] py-20 px-6">
   {/* Section Title */}
@@ -174,7 +170,7 @@ export default function About() {
   </div>
 
   {/* Activities Grid */}
-  <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <div className="max-w-[1360px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     {loadingActivities ? (
       <div className="col-span-full flex justify-center py-12">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
@@ -186,13 +182,16 @@ export default function About() {
     ) : (
       activities.map((activity) => (
         <div key={activity._id} className="overflow-hidden rounded-lg bg-[#111] group cursor-pointer">
-          <img
-            src={activity.imageUrl || teamImage}
-            alt={activity.title}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-64 object-cover group-hover:scale-105 transition duration-500"
-          />
+          <div className="relative aspect-[4/3]">
+            <img
+              src={activity.imageUrl || teamImage}
+              alt={activity.title}
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+            />
+          </div>
           <div className="p-4">
             <h3 className="text-white font-bold text-lg">{activity.title}</h3>
             <p className="text-brand-white text-sm mt-1">

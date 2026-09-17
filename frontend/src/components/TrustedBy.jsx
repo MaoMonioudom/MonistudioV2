@@ -49,7 +49,7 @@ export default function TrustedBy() {
   return (
     <section
       ref={ref}
-      className={`trusted-by-section relative isolate overflow-hidden py-10 md:py-12 bg-transparent reveal ${inView ? "in-view" : ""}`}
+      className="trusted-by-section relative isolate overflow-hidden py-10 md:py-12 bg-transparent"
     >
       <SmokeWisp rotate={8} className="absolute -z-10 top-[4%] right-[18%] w-[90px] h-[92%] pointer-events-none" />
       <SmokeWisp flip rotate={-14} className="absolute -z-10 bottom-1 left-[12%] w-[55px] h-[90px] pointer-events-none" />
@@ -60,7 +60,7 @@ export default function TrustedBy() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white/80"></div>
         </div>
       ) : (
-        <>
+        <div className={`reveal ${inView ? "in-view" : ""}`}>
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="text-center mb-7 md:mb-9">
               <p className="text-[11px] md:text-xs tracking-[0.32em] font-semibold uppercase text-white/60 mb-2">
@@ -129,7 +129,7 @@ export default function TrustedBy() {
               />
             </div>
           </div>
-        </>
+        </div>
       )}
     </section>
   )

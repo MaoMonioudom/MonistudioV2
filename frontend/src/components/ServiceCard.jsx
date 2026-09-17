@@ -13,11 +13,12 @@ export default function ServiceCard({ service, delay = 0, extraClassName = "" })
     >
       {/* Image */}
       {service.imageUrl && (
-        <div className="overflow-hidden">
+        <div className="overflow-hidden relative aspect-[4/3]">
           <img
             src={service.imageUrl}
             alt={service.title}
-            className="w-full h-56 object-cover group-hover:scale-105 transition duration-500"
+            draggable="false"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
           />
         </div>
       )}

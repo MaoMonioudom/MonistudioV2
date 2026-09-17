@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiHome, FiSettings, FiLogOut, FiMenu, FiX, FiImage, FiLayers, FiUsers, FiUserPlus, FiBriefcase, FiCamera, FiChevronDown, FiChevronRight, FiMail } from 'react-icons/fi';
+import { FiHome, FiSettings, FiLogOut, FiMenu, FiX, FiImage, FiLayers, FiUsers, FiUserPlus, FiBriefcase, FiChevronDown, FiChevronRight, FiMail } from 'react-icons/fi';
 import axios from 'axios';
 import Services from './Services';
 import Features from './Features';
-import Banners from './Banners';
+import BannersHub from './BannersHub';
 import TeamActivities from './TeamActivities';
 import TeamMembers from './TeamMembers';
 import Partners from './Partners';
-import ContactBanners from './ContactBanners';
 import ContactSubmissions from './ContactSubmissions';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -106,7 +105,6 @@ const Dashboard = () => {
     { path: '/admin/partners', label: 'Trusted By', icon: FiBriefcase },
     { path: '/admin/features', label: 'Featured Works', icon: FiImage },
     { path: '/admin/services', label: 'Services', icon: FiSettings },
-    { path: '/admin/contact-banners', label: 'Contact Banners', icon: FiCamera },
     { path: '/admin/team-members', label: 'Team Members', icon: FiUserPlus },
     { path: '/admin/team-activities', label: 'Team Activities', icon: FiUsers }
   ];
@@ -115,15 +113,15 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (location.pathname) {
       case '/admin/banners':
-        return <Banners />;
+      case '/admin/contact-banners':
+      case '/admin/portfolio-banners':
+        return <BannersHub />;
       case '/admin/services':
         return <Services />;
       case '/admin/features':
         return <Features />;
       case '/admin/partners':
         return <Partners />;
-      case '/admin/contact-banners':
-        return <ContactBanners />;
       case '/admin/contact-submissions':
         return <ContactSubmissions />;
       case '/admin/team-members':

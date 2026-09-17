@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import PublicLayout from "./components/PublicLayout"
 
 const Home = lazy(() => import("./pages/Home"))
 const Portfolio = lazy(() => import("./pages/Works"))
@@ -18,13 +19,15 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/service/:id" element={<ServiceDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/feature/:id" element={<FeatureDetail />} />
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/service" element={<Service />} />
+            <Route path="/service/:id" element={<ServiceDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/feature/:id" element={<FeatureDetail />} />
+          </Route>
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />
@@ -34,6 +37,7 @@ function App() {
           <Route path="/admin/features" element={<Dashboard />} />
           <Route path="/admin/partners" element={<Dashboard />} />
           <Route path="/admin/contact-banners" element={<Dashboard />} />
+          <Route path="/admin/portfolio-banners" element={<Dashboard />} />
           <Route path="/admin/contact-submissions" element={<Dashboard />} />
           <Route path="/admin/team-members" element={<Dashboard />} />
           <Route path="/admin/team-activities" element={<Dashboard />} />
